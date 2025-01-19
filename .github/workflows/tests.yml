@@ -23,7 +23,7 @@ jobs:
       shell: pwsh
       run: |
         $config = New-PesterConfiguration
-        $config.Run.Path = '{0}/tests' -f '${{ github.workspace }}'
+        $config.Run.Path = '../tests'
         $config.CodeCoverage.Enabled = $true
         $config.Output.Verbosity = 'Detailed'
         Invoke-Pester -Configuration $config
