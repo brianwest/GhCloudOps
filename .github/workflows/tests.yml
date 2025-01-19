@@ -14,9 +14,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - run: |
-        ${{ github.workspace }}
-
     - uses: actions/checkout@v4
 
     - name: Run Tests
