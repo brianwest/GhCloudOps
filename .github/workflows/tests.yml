@@ -18,10 +18,18 @@ jobs:
 
     - name: Run Tests
       shell: pwsh
+      working-directory: ${{ github.workspace }}
       run: |
         $config = New-PesterConfiguration
-        $config.Run.Path = Join-Path '${{ github.workspace }}' -ChildPath 'tests'
+        $config.Run.Path = 'tests'
         $config.CodeCoverage.Enabled = $true
-        $config.CodeCoverage.Path = '${{ github.workspace }}'
+        $config.CodeCoverage.Path = '.'
         $config.Output.Verbosity = 'Detailed'
         Invoke-Pester -Configuration $config
+
+    - name: Upload Code Coverage
+      if: ${{ success() }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: code-coverage-report
+        path: ${{ github.workspace }}/coverage.xml
