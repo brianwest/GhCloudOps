@@ -16,10 +16,6 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - run: |
-        gci -Path ./tests/helpers
-      shell: pwsh
-
     - name: Run Tests
       shell: pwsh
       run: |
