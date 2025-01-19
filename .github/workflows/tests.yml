@@ -18,6 +18,7 @@ jobs:
 
     - run: |
         Get-ChildItem
+      shell: pwsh
 
     - name: Run Tests
       shell: pwsh
