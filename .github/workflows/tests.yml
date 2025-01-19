@@ -22,6 +22,6 @@ jobs:
         $config = New-PesterConfiguration
         $config.Run.Path = Join-Path '${{ github.workspace }}' -ChildPath 'tests'
         $config.CodeCoverage.Enabled = $true
-        $config.CodeCoverage.Path = Join-Path '${{ github.workspace }}'
+        $config.CodeCoverage.Path = '${{ github.workspace }}'
         $config.Output.Verbosity = 'Detailed'
         Invoke-Pester -Configuration $config
