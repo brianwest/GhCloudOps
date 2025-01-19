@@ -16,11 +16,14 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    - run: |
+        Get-ChildItem
+
     - name: Run Tests
       shell: pwsh
       run: |
         $config = New-PesterConfiguration
-        $config.Run.Path = '../tests'
+        $config.Run.Path = Join-Path '${{ github.workspace }}' -ChildPath 'tests'
         $config.CodeCoverage.Enabled = $true
         $config.Output.Verbosity = 'Detailed'
         Invoke-Pester -Configuration $config
