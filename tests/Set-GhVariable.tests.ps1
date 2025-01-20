@@ -4,7 +4,8 @@ Describe 'Set-GhVariable' {
         $modulePath = Join-Path -Path $repoRoot -ChildPath 'GitHubTools.psm1'
         Import-Module -Name $modulePath -Force
 
-        $tempFile = New-Item -ItemType File -Path 'TestDrive:\ghtemp' -Force
+        $ghTemp = Join-Path -Path 'TestDrive:' -ChildPath 'ghtemp'
+        $tempFile = New-Item -ItemType File -Path $ghTemp -Force
         $originalEnv = $env:GITHUB_ENV
         $env:GITHUB_ENV = $tempFile.FullName
     }

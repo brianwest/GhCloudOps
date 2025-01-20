@@ -6,7 +6,7 @@ Describe 'Convert-Token' {
 
 		$helperPath = Join-Path -Path $repoRoot -ChildPath 'tests' -AdditionalChildPath 'helpers'
 		$inputFile = Join-Path -Path $helperPath -ChildPath 'test.bicepparam'
-		$outputFile = Join-Path -Path $helperPath -ChildPath 'output' -AdditionalChildPath 'expanded.bicepparam'
+		$outputFile = Join-Path -Path 'TestDrive:' -ChildPath 'expanded.bicepparam'
 
 		$tokenMap = @{
 			string = 'string'
@@ -15,6 +15,8 @@ Describe 'Convert-Token' {
 			null   = $null
 		}
 
+		$tempFile = join-path 'TestDrive:' -ChildPath 'tempfile.tmp'
+		Mock -CommandName 'New-TemporaryFile' -ModuleName 'GitHubTools' -MockWith { New-Item -ItemType File -Path $tempFile -Force }
 		Mock -CommandName 'Write-Error' -ModuleName 'GitHubTools'
 		Mock -CommandName 'Write-Warning' -ModuleName 'GitHubTools'
 	}
@@ -92,9 +94,5 @@ Describe 'Convert-Token' {
 		It 'Should throw' {
 			{ Convert-Token -InputFile $inputFile -OutputFile $outputFile -TokenMap @{} } | Should -Throw
 		}
-	}
-
-	AfterAll {
-		Remove-Item -Path $outputFile -Force
 	}
 }
