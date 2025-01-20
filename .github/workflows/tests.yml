@@ -23,7 +23,7 @@ jobs:
       shell: pwsh
       working-directory: ${{ github.workspace }}/tests
       run: |
-        ./RunTests.ps1 -Path . -CoveragePercentTarget $env:CODE_COVERAGE_PERCENT_TARGET
+        ./Run-Test.ps1 -CoveragePercentTarget $env:CODE_COVERAGE_PERCENT_TARGET
 
     - name: Upload Code Coverage
       if: ${{ success() }}

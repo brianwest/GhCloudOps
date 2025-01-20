@@ -6,38 +6,31 @@
         Runs detailed Pester tests in a given path with code coverage and throws terminating error if code coverage
         is below the given threshold.
 
-    .PARAMETER Path
-        Path to the folder containing the Pester tests.
-
     .PARAMETER CoveragePercentTarget
         The target code coverage percentage. Default is 75.
 
     .EXAMPLE
-        Run-Test.ps1 -Path 'C:\path\to\tests'
+        Run-Test.ps1
 
         Runs Pester tests in the given path with default code coverage target of 75%.
 #>
 param
 (
-    [Parameter(Mandatory)]
-    [string]
-    $Path,
-
     [Parameter()]
     [decimal]
     $CoveragePercentTarget = 75
 )
 
 $config = New-PesterConfiguration
-$config.Run.Path = Split-Path -Path $Path -Parent
+$config.Run.Path = Split-Path -Path $PSScriptRoot -Parent
 $config.CodeCoverage.Enabled = $true
 $config.CodeCoverage.CoveragePercentTarget = $CoveragePercentTarget
-$config.CodeCoverage.OutputPath = Join-Path -Path $Path -ChildPath 'coverage.xml'
+$config.CodeCoverage.OutputPath = Join-Path -Path $PSScriptRoot -ChildPath 'coverage.xml'
 $config.Output.Verbosity = 'Detailed'
 Invoke-Pester -Configuration $config
 
 # Path to your JaCoCo XML report
-$jacocoReportPath = Join-Path -Path $Path -ChildPath 'coverage.xml'
+$jacocoReportPath = Join-Path -Path $PSScriptRoot -ChildPath 'coverage.xml'
 
 # Check if the file exists
 if (Test-Path -Path $jacocoReportPath)
