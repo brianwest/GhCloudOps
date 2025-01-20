@@ -4,9 +4,9 @@ Describe 'Set-GhVariable' {
         $modulePath = Join-Path -Path $repoRoot -ChildPath 'GitHubTools.psm1'
         Import-Module -Name $modulePath -Force
 
-        $script:tempFile = New-TemporaryFile
-        $script:originalEnv = $env:GITHUB_ENV
-        $env:GITHUB_ENV = $script:tempFile.FullName
+        $tempFile = New-Item -ItemType File -Path 'TestDrive:\ghtemp' -Force
+        $originalEnv = $env:GITHUB_ENV
+        $env:GITHUB_ENV = $tempFile.FullName
     }
 
     Context 'When paramters are configured correctly' {
@@ -37,7 +37,6 @@ Describe 'Set-GhVariable' {
     }
 
     AfterAll {
-        Remove-Item -Path $script:tempFile -Force
-        $env:GITHUB_ENV = $script:originalEnv
+        $env:GITHUB_ENV = $originalEnv
     }
 }
