@@ -20,6 +20,11 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    - name: Get Installed Modules
+      shell: pwsh
+      run: |
+        Get-InstalledModule | Sort-Object -Property Name | Format-Table -AutoSize
+
     - name: Run Tests
       shell: pwsh
       run: |
