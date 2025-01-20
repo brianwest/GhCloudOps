@@ -29,16 +29,12 @@ $config.CodeCoverage.OutputPath = Join-Path -Path $PSScriptRoot -ChildPath 'cove
 $config.Output.Verbosity = 'Detailed'
 Invoke-Pester -Configuration $config
 
-# Path to your JaCoCo XML report
 $jacocoReportPath = Join-Path -Path $PSScriptRoot -ChildPath 'coverage.xml'
 
-# Check if the file exists
 if (Test-Path -Path $jacocoReportPath)
 {
-    # Load XML content
     [xml]$jacocoReport = Get-Content $jacocoReportPath
 
-    # Extract coverage data
     $coverage = ($jacocoReport.report.counter).Where({ $_.type -eq "INSTRUCTION" })
     $covered = [int]$coverage.covered
     $missed = [int]$coverage.missed
@@ -47,12 +43,12 @@ if (Test-Path -Path $jacocoReportPath)
 
     if ($percentageCovered -lt $config.CodeCoverage.CoveragePercentTarget.Value)
     {
-        $failMessage = "Coverage percentage is {0}% and target is {1}%." -f $percentageCovered, $config.CodeCoverage.CoveragePercentTarget.Value
+        $failMessage = 'Coverage percentage is {0}% and target is {1}%.' -f $percentageCovered, $config.CodeCoverage.CoveragePercentTarget.Value
         throw $failMessage
     }
     else
     {
-        $successMessage = "Coverage percentage is {0}% and target is {1}%." -f $percentageCovered, $config.CodeCoverage.CoveragePercentTarget.Value
+        $successMessage = 'Coverage percentage is {0}% and target is {1}%.' -f $percentageCovered, $config.CodeCoverage.CoveragePercentTarget.Value
         Write-Host -Object $successMessage -ForegroundColor Green
     }
 }

@@ -10,7 +10,7 @@ on:
       - '.github/workflows/tests.yml'
 
 env:
-  CODE_COVERAGE_PERCENT_TARGET: 40
+  CODE_COVERAGE_PERCENT_TARGET: 95
 
 jobs:
   test:
@@ -30,4 +30,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: code-coverage-report
-        path: ${{ github.workspace }}/coverage.xml
+        path: ${{ github.workspace }}/tests/coverage.xml
