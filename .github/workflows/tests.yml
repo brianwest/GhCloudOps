@@ -9,6 +9,9 @@ on:
       - 'GitHubTools.pms1'
       - '.github/workflows/tests.yml'
 
+env:
+  CODE_COVERAGE_PERCENT_TARGET: 80
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -18,14 +21,9 @@ jobs:
 
     - name: Run Tests
       shell: pwsh
-      working-directory: ${{ github.workspace }}
+      working-directory: ${{ github.workspace }}/tests
       run: |
-        $config = New-PesterConfiguration
-        $config.Run.Path = 'tests'
-        $config.CodeCoverage.Enabled = $true
-        $config.CodeCoverage.Path = '.'
-        $config.Output.Verbosity = 'Detailed'
-        Invoke-Pester -Configuration $config
+        ./RunTests.ps1 -Path . -CoveragePercentTarget $env:CODE_COVERAGE_PERCENT_TARGET
 
     - name: Upload Code Coverage
       if: ${{ success() }}
