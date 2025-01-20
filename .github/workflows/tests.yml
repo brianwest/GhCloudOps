@@ -7,6 +7,7 @@ on:
     paths:
       - 'tests/**'
       - 'GitHubTools.pms1'
+      - 'Run-Test.ps1'
       - '.github/workflows/tests.yml'
 
 env:
@@ -21,9 +22,13 @@ jobs:
 
     - name: Run Tests
       shell: pwsh
-      working-directory: ${{ github.workspace }}/tests
       run: |
-        ./Run-Test.ps1 -CoveragePercentTarget $env:CODE_COVERAGE_PERCENT_TARGET
+        $testParams = @{
+          ModulePath = './GitHubTools.psm1'
+          CoveragePercentTarget = $env:CODE_COVERAGE_PERCENT_TARGET
+        }
+
+        ./Run-Test.ps1 @testParams
 
     - name: Upload Code Coverage
       if: ${{ success() }}

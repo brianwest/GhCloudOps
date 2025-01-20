@@ -19,6 +19,20 @@ Describe 'Convert-Token' {
 		Mock -CommandName 'Write-Warning' -ModuleName 'GitHubTools'
 	}
 
+	Context 'When parameters are properly configured' {
+		It 'Should have InputFile as a mandatory string parameter' {
+			Get-Command -Name 'Convert-Token' | Should -HaveParameter 'InputFile' -Type 'string' -Mandatory
+		}
+
+		It 'Should have OutputFile as a mandatory string parameter' {
+			Get-Command -Name 'Convert-Token' | Should -HaveParameter 'OutputFile' -Type 'string' -Mandatory
+		}
+
+		It 'Should have TokenMap as a mandatory hashtable parameter' {
+			Get-Command -Name 'Convert-Token' | Should -HaveParameter 'TokenMap' -Type 'hashtable' -Mandatory
+		}
+	}
+
 	Context 'When tokens match tokenized values' {
 		BeforeAll {
 			Convert-Token -InputFile $inputFile -OutputFile $outputFile -TokenMap $tokenMap
