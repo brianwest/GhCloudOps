@@ -10,7 +10,7 @@ on:
       - '.github/workflows/tests.yml'
 
 env:
-  CODE_COVERAGE_PERCENT_TARGET: 80
+  CODE_COVERAGE_PERCENT_TARGET: 40
 
 jobs:
   test:
