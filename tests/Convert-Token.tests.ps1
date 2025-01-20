@@ -51,6 +51,22 @@ Describe 'Convert-Token' {
 		}
 	}
 
+	Context 'When output file already exists' {
+		BeforeAll {
+			Mock -CommandName 'Clear-Content' -ModuleName 'GitHubTools'
+
+			New-Item -ItemType File -Path $outputFile -Force
+
+			Convert-Token -InputFile $inputFile -OutputFile $outputFile -TokenMap $tokenMap
+		}
+
+		It 'Should clear the contents of the output file' {
+			Should -Invoke 'Clear-Content' -Times 1 -Exactly -Scope 'Context' -ModuleName 'GitHubTools' -ParameterFilter {
+				$Path -eq $outputFile
+			}
+		}
+	}
+
 	Context 'When tokens are missing from the token map' {
 		BeforeAll {
 			$unmatchedTokenMap = $tokenMap.Clone()
