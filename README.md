@@ -18,6 +18,35 @@ $tokenMap = @{
 Convert-Token -InputFile 'params.bicepparam' -OutputFile 'expanded.bicepparam' -TokenMap $tokenMap
 ```
 
+#### Tokenized Parameter File
+
+```bicep
+using 'test.bicep'
+
+param stringTest = '{{ string }}'
+
+param intTest = '{{ int }}'
+
+param boolTest = '{{ bool }}'
+
+param nullTest = '{{ null }}'
+
+```
+
+#### Expanded Parameter File
+
+```bicep
+using 'test.bicep'
+
+param stringTest = 'string'
+
+param intTest = 1
+
+param boolTest = true
+
+param nullTest = null
+```
+
 ### [`Set-GhVariable`](GitHubTools.psm1)
 Sets GitHub Actions environment variables during workflow execution.
 
