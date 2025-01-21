@@ -95,8 +95,7 @@ function Convert-Token
 	if ($unmatchedTokens)
 	{
 		Write-Error -Message 'Unmatched tokens found'
-		Out-Host -InputObject $unmatchedTokens
-		throw
+		throw $unmatchedTokens.ToString()
 	}
 
 	$unusedTokens = New-Object -TypeName System.Collections.ArrayList
