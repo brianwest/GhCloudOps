@@ -6,7 +6,7 @@ on:
       - main
     paths:
       - 'tests/**'
-      - 'GitHubTools.pms1'
+      - 'GitHubTools.psm1'
       - 'Run-Test.ps1'
       - '.github/workflows/tests.yml'
 
