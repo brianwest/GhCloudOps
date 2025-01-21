@@ -20,6 +20,25 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    - name: Check Convert-Token Terminating Error
+      shell: pwsh
+      run: |
+        Import-Module -Name ./GitHubTools.psm1
+
+        $tokenMap = @{
+          string = 'string'
+          int    = 123
+          bool   = $true
+        }
+
+        $convertTokenParams = @{
+          InputFile  = './tests/helpers/test.bicepparam'
+          OutputFile = './tests/helpers/expanded-test.bicepparam.json'
+          TokenMap   = $tokenMap
+        }
+
+        Convert-Token @convertTokenParams
+
     - name: Install Key Vault Module
       shell: pwsh
       run: |
