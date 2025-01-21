@@ -47,8 +47,8 @@ Describe 'Set-GhVariable' {
             $value1 = 'output1'
             $value2 = 'output*&^%$#@!'
 
-            Set-GhVariable -Name 'OUT_VAR1' -Value $value1 -Output
-            Set-GhVariable -Name 'OUT_VAR2' -Value $value2 -Output
+            Set-GhVariable -Name 'OUT_VAR1' -Value $value1 -IsOutput
+            Set-GhVariable -Name 'OUT_VAR2' -Value $value2 -IsOutput
 
             $content = Get-Content $env:GITHUB_OUTPUT
         }

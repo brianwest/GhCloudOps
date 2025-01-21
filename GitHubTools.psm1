@@ -141,7 +141,7 @@ function Set-GhVariable
 		.PARAMETER Value
 			The value of the environment variable.
 
-		.PARAMETER Output
+		.PARAMETER IsOutput
 			Indicates whether the variable should be set in the GITHUB_OUTPUT file instead of the GITHUB_ENV file.
 
 		.EXAMPLE
@@ -150,7 +150,7 @@ function Set-GhVariable
 			Sets the environment variable 'MY_VAR' to 'my_value' in the GITHUB_ENV file.
 
 		.EXAMPLE
-			Set-GhVariable -Name 'MY_OUTPUT_VAR' -Value 'output_value' -Output
+			Set-GhVariable -Name 'MY_OUTPUT_VAR' -Value 'output_value' -IsOutput
 
 			Sets the output variable 'MY_OUTPUT_VAR' to 'output_value' in the GITHUB_OUTPUT file.
 	#>
@@ -166,12 +166,12 @@ function Set-GhVariable
 
 		[Parameter()]
 		[switch]
-		$Output
+		$IsOutput
 	)
 
 	$setVariableParams = @{
 		InputObject = '{0}={1}' -f $Name, $Value
-		FilePath    = $Output ? $env:GITHUB_OUTPUT : $env:GITHUB_ENV
+		FilePath    = $IsOutput ? $env:GITHUB_OUTPUT : $env:GITHUB_ENV
 		Append      = $true
 	}
 

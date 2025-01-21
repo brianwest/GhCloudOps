@@ -48,10 +48,16 @@ param nullTest = null
 ```
 
 ### [`Set-GhVariable`](GitHubTools.psm1)
-Sets GitHub Actions environment variables during workflow execution.
+Sets GitHub Actions variables during workflow execution.
 
+Environment variables can be set as follows:
 ```powershell
 Set-GhVariable -Name 'DEPLOY_ENV' -Value 'production'
+```
+
+Output variables can be set as follows:
+```powershell
+Set-GhVariable -Name 'DEPLOY_URL' -Value 'https://example.com' -IsOutput
 ```
 
 ### [`Set-RandomKeyVaultSecret`](GitHubTools.psm1)
