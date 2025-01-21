@@ -79,7 +79,8 @@ Describe 'Convert-Token' {
 
 		It 'Should write an error' {
 			Should -Invoke 'Write-Error' -Times 1 -Exactly -Scope 'Context' -ModuleName 'GitHubTools' -ParameterFilter {
-				$Message -eq 'Unmatched tokens found'
+				$Message -eq 'Unmatched tokens found' -and
+				$ErrorAction -eq 'Continue'
 			}
 		}
 	}
