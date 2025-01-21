@@ -4,10 +4,15 @@ Describe 'Set-GhVariable' {
         $modulePath = Join-Path -Path $repoRoot -ChildPath 'GitHubTools.psm1'
         Import-Module -Name $modulePath -Force
 
-        $ghTemp = Join-Path -Path 'TestDrive:' -ChildPath 'ghtemp'
-        $tempFile = New-Item -ItemType File -Path $ghTemp -Force
         $originalEnv = $env:GITHUB_ENV
-        $env:GITHUB_ENV = $tempFile.FullName
+        $envTemp = Join-Path -Path 'TestDrive:' -ChildPath 'envTemp'
+        $envTempFile = New-Item -ItemType File -Path $envTemp -Force
+        $env:GITHUB_ENV = $envTempFile.FullName
+
+        $originalOutput = $env:GITHUB_OUTPUT
+        $outputTemp = Join-Path -Path 'TestDrive:' -ChildPath 'outputTemp'
+        $outputTempFile = New-Item -ItemType File -Path $outputTemp -Force
+        $env:GITHUB_OUTPUT = $outputTempFile.FullName
     }
 
     Context 'When paramters are configured correctly' {
@@ -37,7 +42,25 @@ Describe 'Set-GhVariable' {
         }
     }
 
+    Context 'When setting output variables' {
+        BeforeAll {
+            $value1 = 'output1'
+            $value2 = 'output*&^%$#@!'
+
+            Set-GhVariable -Name 'OUT_VAR1' -Value $value1 -Output
+            Set-GhVariable -Name 'OUT_VAR2' -Value $value2 -Output
+
+            $content = Get-Content $env:GITHUB_OUTPUT
+        }
+
+        It 'Should create multiple output variables' {
+            $content[0] | Should -BeExactly ('OUT_VAR1={0}' -f $value1)
+            $content[1] | Should -BeExactly ('OUT_VAR2={0}' -f $value2)
+        }
+    }
+
     AfterAll {
         $env:GITHUB_ENV = $originalEnv
+        $env:GITHUB_OUTPUT = $originalOutput
     }
 }

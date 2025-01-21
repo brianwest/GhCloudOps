@@ -224,11 +224,10 @@ function Set-RandomKeyVaultSecret
 		Force       = $true
 	}
 
-	$secretValue = ConvertTo-SecureString @secretValueParams
 	$secretParams = @{
 		VaultName   = $KeyVaultName
 		Name        = $SecretName
-		SecretValue = $secretValue
+		SecretValue = ConvertTo-SecureString @secretValueParams
 	}
 
 	$null = Set-AzKeyVaultSecret @secretParams
