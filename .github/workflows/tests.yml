@@ -29,7 +29,7 @@ jobs:
       shell: pwsh
       run: |
         $testParams = @{
-          ModulePath = './GitHubTools.psm1'
+          ModulePath            = './GitHubTools.psm1'
           CoveragePercentTarget = $env:CODE_COVERAGE_PERCENT_TARGET
         }
 
