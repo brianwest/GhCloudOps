@@ -15,6 +15,14 @@
             "request": "launch",
             "script": "${file}",
             "cwd": "${cwd}"
+        },
+        {
+            "name": "PowerShell Run Pester Tests",
+            "type": "PowerShell",
+            "request": "launch",
+            "script": "Invoke-Pester",
+            "createTemporaryIntegratedConsole": true,
+            "attachDotnetDebugger": true
         }
     ]
 }
