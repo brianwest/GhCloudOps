@@ -95,7 +95,7 @@ function Convert-Token
 	if ($unmatchedTokens)
 	{
 		Write-Error -Message 'Unmatched tokens found'
-		$unmatchedTokens
+		Out-Host -InputObject $unmatchedTokens
 		throw
 	}
 
