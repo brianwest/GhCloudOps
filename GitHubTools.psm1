@@ -141,10 +141,18 @@ function Set-GhVariable
 		.PARAMETER Value
 			The value of the environment variable.
 
+		.PARAMETER Output
+			Indicates whether the variable should be set in the GITHUB_OUTPUT file instead of the GITHUB_ENV file.
+
 		.EXAMPLE
 			Set-GhVariable -Name 'MY_VAR' -Value 'my_value'
 
 			Sets the environment variable 'MY_VAR' to 'my_value' in the GITHUB_ENV file.
+
+		.EXAMPLE
+			Set-GhVariable -Name 'MY_OUTPUT_VAR' -Value 'output_value' -Output
+
+			Sets the output variable 'MY_OUTPUT_VAR' to 'output_value' in the GITHUB_OUTPUT file.
 	#>
 	param
 	(
@@ -154,12 +162,16 @@ function Set-GhVariable
 
 		[Parameter(Mandatory)]
 		[string]
-		$Value
+		$Value,
+
+		[Parameter()]
+		[switch]
+		$Output
 	)
 
 	$setVariableParams = @{
 		InputObject = '{0}={1}' -f $Name, $Value
-		FilePath    = $env:GITHUB_ENV
+		FilePath    = $Output ? $env:GITHUB_OUTPUT : $env:GITHUB_ENV
 		Append      = $true
 	}
 
@@ -168,6 +180,28 @@ function Set-GhVariable
 
 function Set-RandomKeyVaultSecret
 {
+	<#
+		.SYNOPSIS
+			Sets a random secret in an Azure Key Vault.
+
+		.DESCRIPTION
+			Sets a random secret in an Azure Key Vault. The function generates a random string of the specified length
+			and sets it as the value of the secret in the specified Key Vault.
+
+		.PARAMETER KeyVaultName
+			The name of the Azure Key Vault where the secret will be stored.
+
+		.PARAMETER SecretName
+			The name of the secret to be created or updated in the Key Vault.
+
+		.PARAMETER Length
+			The length of the random string to be generated for the secret value.
+
+		.EXAMPLE
+			Set-RandomKeyVaultSecret -KeyVaultName 'myKeyVault' -SecretName 'mySecret' -Length 16
+
+			Creates or updates a secret named 'mySecret' in the Key Vault 'myKeyVault' with a random string of length 16.
+	#>
 	param
 	(
 		[Parameter(Mandatory)]
@@ -184,7 +218,13 @@ function Set-RandomKeyVaultSecret
 	)
 
 	$chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_-+=<>?[]{}|;:,.`~'
-	$secretValue = ConvertTo-SecureString -String ( -join (1..$Length | ForEach-Object { $chars[(Get-Random -Minimum 0 -Maximum $chars.Length)] }) ) -AsPlainText -Force
+	$secretValueParams = @{
+		String      = -join (1..$Length | ForEach-Object { $chars[(Get-Random -Minimum 0 -Maximum $chars.Length)] })
+		AsPlainText = $true
+		Force       = $true
+	}
+
+	$secretValue = ConvertTo-SecureString $secretValueParams
 	$secretParams = @{
 		VaultName   = $KeyVaultName
 		Name        = $SecretName
