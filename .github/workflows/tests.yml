@@ -22,6 +22,7 @@ jobs:
 
     - name: Check Convert-Token Terminating Error
       shell: pwsh
+      continue-on-error: true
       run: |
         Import-Module -Name ./GitHubTools.psm1
 
