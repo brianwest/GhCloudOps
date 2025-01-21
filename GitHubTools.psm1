@@ -224,7 +224,7 @@ function Set-RandomKeyVaultSecret
 		Force       = $true
 	}
 
-	$secretValue = ConvertTo-SecureString $secretValueParams
+	$secretValue = ConvertTo-SecureString @secretValueParams
 	$secretParams = @{
 		VaultName   = $KeyVaultName
 		Name        = $SecretName
