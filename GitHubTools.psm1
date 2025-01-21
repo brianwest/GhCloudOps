@@ -94,7 +94,7 @@ function Convert-Token
 	$unmatchedTokens = Select-String -Path $temporaryFile -Pattern $pattern -AllMatches
 	if ($unmatchedTokens)
 	{
-		Write-Error -Message 'Unmatched tokens found'
+		Write-Error -Message 'Unmatched tokens found' -ErrorAction Continue
 		throw $unmatchedTokens
 	}
 
