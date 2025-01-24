@@ -48,7 +48,7 @@ Describe 'Set-RandomKeyVaultSecret' {
 
         It 'Should notify the user that the secret has been set' {
             Should -Invoke 'Write-Host' -Times 1 -Exactly -Scope 'Context' -ModuleName 'GitHubTools' -ParameterFilter {
-                $Object -eq ('Secret {0} set in Key Vault {1}' -f $secret, $vault)
+                $Object -eq ("Secret '{0}' set in Key Vault '{1}'." -f $secret, $vault)
             }
         }
     }
