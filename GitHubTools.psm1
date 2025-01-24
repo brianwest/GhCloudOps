@@ -231,5 +231,5 @@ function Set-RandomKeyVaultSecret
 	}
 
 	$null = Set-AzKeyVaultSecret @secretParams
-	Write-Host -Object ('Secret {0} set in Key Vault {1}' -f $SecretName, $KeyVaultName)
+	Write-Host -Object ("Secret '{0}' set in Key Vault '{1}'." -f $SecretName, $KeyVaultName)
 }
