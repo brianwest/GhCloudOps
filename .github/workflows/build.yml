@@ -65,3 +65,10 @@ jobs:
     - name: Build Module
       shell: pwsh
       run: Invoke-Build -File ./build.ps1 -Task Build
+
+    - name: Upload Built Module
+      if: ${{ success() }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: module-artifact
+        path: ${{ github.workspace }}/output
