@@ -4,13 +4,20 @@
 $testPath = Join-Path -Path $PSScriptRoot -ChildPath 'tests'
 $coveragePercentTarget = 95
 $sourcePath = Join-Path -Path $PSScriptRoot -ChildPath 'src'
-$coveragePath = Join-Path -Path $sourcePath -ChildPath 'GitHubTools.psm1'
-$manifestPath = Join-Path -Path $sourcePath -ChildPath 'GitHubTools.psd1'
+$moduleName = (Get-ChildItem -Path $sourcePath -Filter '*.psm1').BaseName
+$moduleFile = '{0}.psm1' -f $moduleName
+$manifestFile = '{0}.psd1' -f $moduleName
+$coveragePath = Join-Path -Path $sourcePath -ChildPath $moduleFile
+$manifestPath = Join-Path -Path $sourcePath -ChildPath $manifestFile
 $publicFunctions = Get-ChildItem -Path (Join-Path -Path $sourcePath -ChildPath 'public') -Filter '*.ps1' -Recurse
 $privateFunctions = Get-ChildItem -Path (Join-Path -Path $sourcePath -ChildPath 'private') -Filter '*.ps1' -Recurse
 $outputFolder = Join-Path -Path $PSScriptRoot -ChildPath 'output'
-$builtModulePath = Join-Path -Path $outputFolder -ChildPath 'GitHubTools.psm1'
-$builtManifestPath = Join-Path -Path $outputFolder -ChildPath 'GitHubTools.psd1'
+
+task set_environment_variables {
+    $env:MODULE_VERSION = '0.0.0'
+    $env:PROJECT_URI = 'https://github.com/brianwest/github-tools'
+    $env:RELEASE_NOTES = 'Only for testing local build'
+}
 
 task clean_output {
     if (Test-Path -Path $outputFolder)
@@ -66,7 +73,9 @@ task test {
 }
 
 task build_module clean_output, {
-    New-Item -ItemType Directory -Path $outputFolder -Force
+    $script:releaseFolder = Join-Path -Path $outputFolder -ChildPath $moduleName -AdditionalChildPath $env:MODULE_VERSION
+    $script:builtModulePath = Join-Path -Path $releaseFolder -ChildPath $moduleFile
+
     New-Item -ItemType File -Path $builtModulePath -Force
     $script:functionsToExport = @()
     foreach ($publicFunction in $publicFunctions)
@@ -87,6 +96,8 @@ task build_module clean_output, {
 }
 
 task update_manifest clean_output, build_module, {
+    $builtManifestPath = Join-Path -Path $releaseFolder -ChildPath $manifestFile
+
     $manifest = Import-PowerShellDataFile -Path $manifestPath
     $manifest.FunctionsToExport = $script:functionsToExport
     $manifest.PrivateData.PSData.ProjectUri = $env:PROJECT_URI
@@ -105,10 +116,12 @@ task update_manifest clean_output, build_module, {
         AliasesToExport            = $manifest.AliasesToExport
         ProjectUri                 = $manifest.PrivateData.PSData.ProjectUri
         ReleaseNotes               = $manifest.PrivateData.PSData.ReleaseNotes
-        ExternalModuleDependencies = @($manifest.PrivateData.PSData.ExternalModuleDependencies)
+        ExternalModuleDependencies = $manifest.PrivateData.PSData.ExternalModuleDependencies
     }
 
     New-ModuleManifest @manifestParams
 }
 
 task build clean_output, build_module, update_manifest
+
+task local_build set_environment_variables, clean_output, build_module, update_manifest
