@@ -5,11 +5,12 @@ A PowerShell module providing utilities for GitHub Actions and Azure deployments
 ## Functions
 
 ### [`Convert-Token`](GitHubTools.psm1)
+
 Converts tokenized Bicep parameter files by replacing tokens with values from a provided map. Useful for managing configuration across different environments.
 
 ```powershell
 $tokenMap = @{
-    string = 'value'
+    string = 'string'
     int    = 1
     bool   = $true
     null   = $null
@@ -48,6 +49,7 @@ param nullTest = null
 ```
 
 ### [`Set-GhVariable`](GitHubTools.psm1)
+
 Sets GitHub Actions variables during workflow execution.
 
 Environment variables can be set as follows:
@@ -61,6 +63,7 @@ Set-GhVariable -Name 'DEPLOY_URL' -Value 'https://example.com' -IsOutput
 ```
 
 ### [`Set-RandomKeyVaultSecret`](GitHubTools.psm1)
+
 Generates and sets a random secret in an Azure Key Vault.
 
 ```powershell
