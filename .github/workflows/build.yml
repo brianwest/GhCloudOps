@@ -11,17 +11,20 @@ on:
   workflow_dispatch:
     inputs:
       projectUri:
-        description: 'The URI of the project to build'
+        description: The URI of the project to build
+        type: string
         required: false
-        default: 'https://github.com/brianwest/github-tools'
+        default: https://github.com/brianwest/github-tools
       releaseNotes:
-        description: 'Release notes for the build'
+        description: Release notes for the build
+        type: string
         required: false
-        default: 'No release notes provided'
+        default: No release notes provided
       moduleVersion:
-        description: 'The version of the module to build'
+        description: The version of the module to build
+        type: string
         required: false
-        default: '0.0.0'
+        default: 0.0.0
 
 jobs:
   build:
