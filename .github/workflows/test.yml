@@ -17,7 +17,6 @@ env:
 jobs:
   test:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v4
 
@@ -36,11 +35,11 @@ jobs:
       shell: pwsh
       run: |
         $testParams = @{
-          CoveragePath          = './src/functions'
+          CoveragePath          = './src/public'
           CoveragePercentTarget = $env:CODE_COVERAGE_PERCENT_TARGET
         }
 
-        ./Run-Test.ps1 @testParams
+        ./test.ps1 @testParams
 
     - name: Upload Code Coverage
       if: ${{ success() }}

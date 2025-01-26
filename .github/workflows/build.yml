@@ -1,0 +1,21 @@
+name: Build Module
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'src/**'
+      - '.github/workflows/build.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install InvokeBuild Module
+      shell: pwsh
+      run: |
+        Install-Module -Name InvokeBuild -Force
