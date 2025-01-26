@@ -30,7 +30,7 @@ jobs:
       uses: microsoft/psscriptanalyzer-action@v1.1
       with:
         path: ./src
-        settings: ./vscode/PSScriptAnalyzerSettings.psd1
+        settings: ${{ github.workspace }}/.vscode/PSScriptAnalyzerSettings.psd1
 
     - name: Run Tests
       shell: pwsh

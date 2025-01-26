@@ -1,6 +1,7 @@
 name: Test-PSModule
 
-on: [push]
+on:
+  workflow_dispatch:
 
 jobs:
   Test-PSModule:
