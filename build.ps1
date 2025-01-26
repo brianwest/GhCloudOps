@@ -35,8 +35,8 @@ task install_modules {
     foreach ($requiredModule in $requiredModules)
     {
         $requiredModuleParams = @{
-            Name            = $requiredModule.Name
-            RequiredVersion = $requiredModule.Version
+            Name            = $requiredModule.ModuleName
+            RequiredVersion = $requiredModule.ModuleVersion
         }
 
         $module = Get-InstalledModule @requiredModuleParams -ErrorAction SilentlyContinue
