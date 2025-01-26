@@ -1,11 +1,11 @@
-name: Test-PSModule
+name: Build-PSModule
 
 on:
   workflow_dispatch:
 
 jobs:
-  Test-PSModule:
-    name: Test-PSModule
+  Build-PSModule:
+    name: Build-PSModule
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -13,3 +13,9 @@ jobs:
 
       - name: Initialize environment
         uses: PSModule/Initialize-PSModule@main
+
+      - name: Build PSModule
+        uses: PSModule/Build-PSModule@v2
+        with:
+          Name: GitHubTools
+          Version: 1.0.4
