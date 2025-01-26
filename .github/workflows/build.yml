@@ -9,6 +9,19 @@ on:
       - 'build.ps1'
       - '.github/workflows/build.yml'
   workflow_dispatch:
+    inputs:
+      projectUri:
+        description: 'The URI of the project to build'
+        required: false
+        default: 'https://github.com/brianwest/github-tools'
+      releaseNotes:
+        description: 'Release notes for the build'
+        required: false
+        default: 'No release notes provided'
+      moduleVersion:
+        description: 'The version of the module to build'
+        required: false
+        default: '0.0.0'
 
 jobs:
   build:
@@ -23,3 +36,7 @@ jobs:
     - name: Build Module
       shell: pwsh
       run: Invoke-Build -File ./build.ps1 -Task Build
+      env:
+        PROJECT_URI: ${{ github.event.inputs.projectUri }}
+        RELEASE_NOTES: ${{ github.event.inputs.releaseNotes }}
+        MODULE_VERSION: ${{ github.event.inputs.moduleVersion }}

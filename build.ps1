@@ -88,7 +88,6 @@ task build_module clean_output, {
 
 task update_manifest clean_output, build_module, {
     $manifest = Import-PowerShellDataFile -Path $manifestPath
-    $manifest.ModuleVersion = $env:MODULE_VERSION
     $manifest.FunctionsToExport = $script:functionsToExport
     $manifest.PrivateData.PSData.ProjectUri = $env:PROJECT_URI
     $manifest.PrivateData.PSData.ReleaseNotes = $env:RELEASE_NOTES
