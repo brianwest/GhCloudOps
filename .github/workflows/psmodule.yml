@@ -14,6 +14,9 @@ jobs:
       - name: Initialize environment
         uses: PSModule/Initialize-PSModule@main
 
+      - name: Install GitHub PowerShell Module
+        run: Install-Module -Name GitHub -Force
+
       - name: Build PSModule
         uses: PSModule/Build-PSModule@v2
         with:
