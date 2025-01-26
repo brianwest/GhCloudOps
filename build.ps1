@@ -1,6 +1,6 @@
 #requires -Version 7.0
-#requires -Modules @{ ModuleName = 'Pester'; ModuleVersion = '5.7.1' }
 
+$requiredModules = Import-PowerShellDataFile -Path (Join-Path -Path $PSScriptRoot -ChildPath 'RequiredModules.psd1')
 $testPath = Join-Path -Path $PSScriptRoot -ChildPath 'tests'
 $coveragePercentTarget = 95
 $sourcePath = Join-Path -Path $PSScriptRoot -ChildPath 'src'
@@ -20,19 +20,10 @@ task set_environment_variables {
 }
 
 task install_modules {
-    $pesterParams = @{
-        Name            = 'Pester'
-        RequiredVersion = '5.7.1'
-    }
-
-    $pester = Get-InstalledModule @pesterParams -ErrorAction SilentlyContinue
-    if ($null -eq $pester)
-    {
-        Install-Module @pesterParams -Force
-    }
-
-    $requiredModules = (Import-PowerShellDataFile -Path $manifestPath).RequiredModules
-    foreach ($requiredModule in $requiredModules)
+    $projectRequiredModules = $requiredModules.Modules
+    $moduleRequiredModules = (Import-PowerShellDataFile -Path $manifestPath).RequiredModules
+    $combinedRequiredModules = $projectRequiredModules + $moduleRequiredModules
+    foreach ($requiredModule in $combinedRequiredModules)
     {
         $requiredModuleParams = @{
             Name            = $requiredModule.ModuleName
@@ -42,9 +33,12 @@ task install_modules {
         $module = Get-InstalledModule @requiredModuleParams -ErrorAction SilentlyContinue
         if ($null -eq $module)
         {
-            Install-Module @requiredModuleParams -Force
+            Save-Module @requiredModuleParams -Path $outputFolder -Force
         }
     }
+
+    $currentPath = $env:PSModulePath
+    $env:PSModulePath = '{0};{1}' -f $currentPath, $outputFolder
 }
 
 task clean_output {
