@@ -12,11 +12,6 @@ on:
 
   workflow_dispatch:
     inputs:
-      projectUri:
-        description: The URI of the project to build
-        type: string
-        required: false
-        default: https://github.com/brianwest/GitHubTools
       releaseNotes:
         description: Release notes for the build
         type: string
@@ -29,9 +24,9 @@ on:
         default: 0.0.0
 
 env:
-  PROJECT_URI: https://github.com/brianwest/github-tools
-  RELEASE_NOTES: No release notes provided
+  PROJECT_URI: https://github.com/${{ github.repository}}
   MODULE_VERSION: 0.0.0
+  RELEASE_NOTES: No release notes provided
 
 jobs:
   build:
@@ -50,19 +45,14 @@ jobs:
 
         Set-GhVariable -Name REPO_NAME -Value '${{ github.repository }}'.Split('/')[1]
 
-        if ('${{ github.event.inputs.projectUri }}')
+        if ('${{ github.event.inputs.moduleVersion }}')
         {
-          Set-GhVariable -Name PROJECT_URI -Value '${{ github.event.inputs.projectUri }}'
+          Set-GhVariable -Name MODULE_VERSION -Value '${{ github.event.inputs.moduleVersion }}'
         }
 
         if ('${{ github.event.inputs.releaseNotes }}')
         {
           Set-GhVariable -Name RELEASE_NOTES -Value '${{ github.event.inputs.releaseNotes }}'
-        }
-
-        if ('${{ github.event.inputs.moduleVersion }}')
-        {
-          Set-GhVariable -Name MODULE_VERSION -Value '${{ github.event.inputs.moduleVersion }}'
         }
 
     - name: Build Module
