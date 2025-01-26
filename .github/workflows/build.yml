@@ -47,6 +47,8 @@ jobs:
       run: |
         Import-Module ./src/GitHubTools.psm1
 
+        Set-GhVariable -Name REPO_NAME -Value '${{ github.repository }}'.Split('/')[1]
+
         if ('${{ github.event.inputs.projectUri }}')
         {
           Set-GhVariable -Name PROJECT_URI -Value '${{ github.event.inputs.projectUri }}'
@@ -70,5 +72,5 @@ jobs:
       if: ${{ success() }}
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ github.repository }}-module-${{ env.MODULE_VERSION }}
+        name: ${{ env.REPO_NAME }}-module-${{ env.MODULE_VERSION }}
         path: ${{ github.workspace }}/output
