@@ -1,14 +1,15 @@
 name: Run Tests
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - 'tests/**'
-      - 'GitHubTools.psm1'
-      - 'Run-Test.ps1'
-      - '.github/workflows/tests.yml'
+  # push:
+  #   branches:
+  #     - main
+  #   paths:
+  #     - 'tests/**'
+  #     - 'GitHubTools.psm1'
+  #     - 'Run-Test.ps1'
+  #     - '.github/workflows/tests.yml'
+  workflow_dispatch:
 
 env:
   CODE_COVERAGE_PERCENT_TARGET: 95
