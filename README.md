@@ -89,5 +89,5 @@ Invoke-Build -File ./build.ps1 -Task Test
 ## Installation
 
 ```powershell
-Import-Module ./GitHubTools.psm1
+Install-Module GitHubTools
 ```
