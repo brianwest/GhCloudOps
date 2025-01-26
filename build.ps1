@@ -114,6 +114,8 @@ task update_manifest clean_output, build_module, {
         RequiredModules            = $manifest.RequiredModules
         FunctionsToExport          = $manifest.FunctionsToExport
         AliasesToExport            = $manifest.AliasesToExport
+        Tags                       = $manifest.Tags
+        LicenseUri                 = $manifest.LicenseUri
         ProjectUri                 = $manifest.PrivateData.PSData.ProjectUri
         ReleaseNotes               = $manifest.PrivateData.PSData.ReleaseNotes
         ExternalModuleDependencies = $manifest.PrivateData.PSData.ExternalModuleDependencies

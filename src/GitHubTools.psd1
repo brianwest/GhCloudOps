@@ -91,7 +91,7 @@
             Tags = 'GitHub', 'Actions', 'Azure', 'Bicep'
 
             # A URL to the license for this module.
-            LicenseUri = ''
+            LicenseUri = 'https://github.com/brianwest/github-tools?tab=MIT-1-ov-file#readme'
 
             # A URL to the main website for this project.
             ProjectUri = ''
