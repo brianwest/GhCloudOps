@@ -38,6 +38,7 @@ function Convert-Token
 			The token map is a hashtable where '{{ string }}' is replaced with 'string', '{{ int }}' is replaced with 1,
 			'{{ bool }}' is replaced with true, '{{ null }}' is replaced with null.
 	#>
+	[CmdletBinding()]
 	param
 	(
 		[Parameter(Mandatory)]

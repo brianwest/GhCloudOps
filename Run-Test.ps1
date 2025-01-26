@@ -6,7 +6,7 @@
         Runs detailed Pester tests in a given path with code coverage and throws terminating error if code coverage
         is below the given threshold.
 
-    .PARAMETER ModulePath
+    .PARAMETER CoveragePath
         The path to the module for which the tests are being run.
 
     .PARAMETER TestPath
@@ -16,7 +16,7 @@
         The target code coverage percentage. Default is 75.
 
     .EXAMPLE
-        Run-Test.ps1 -ModulePath 'C:\Path\To\Module'
+        Run-Test.ps1 -CoveragePath 'C:\Path\To\Module'
 
         Runs Pester tests in a subfolder called tests with default code coverage target of 75%.
 #>
@@ -25,7 +25,7 @@ param
     [Parameter(Mandatory)]
     [ValidateScript({ Test-Path -Path $_ })]
     [string]
-    $ModulePath,
+    $CoveragePath,
 
     [Parameter()]
     [ValidateScript({ Test-Path -Path $_ })]
@@ -41,7 +41,7 @@ $config = New-PesterConfiguration
 $config.Run.Path = $TestPath
 $config.CodeCoverage.Enabled = $true
 $config.CodeCoverage.CoveragePercentTarget = $CoveragePercentTarget
-$config.CodeCoverage.Path = $ModulePath
+$config.CodeCoverage.Path = $CoveragePath
 $config.CodeCoverage.OutputPath = Join-Path -Path $TestPath -ChildPath 'coverage.xml'
 $config.Output.Verbosity = 'Detailed'
 Invoke-Pester -Configuration $config

@@ -1,14 +1,14 @@
 name: Run Tests
 
 on:
-  # push:
-  #   branches:
-  #     - main
-  #   paths:
-  #     - 'tests/**'
-  #     - 'GitHubTools.psm1'
-  #     - 'Run-Test.ps1'
-  #     - '.github/workflows/tests.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'tests/**'
+      - 'GitHubTools.psm1'
+      - 'Run-Test.ps1'
+      - '.github/workflows/tests.yml'
   workflow_dispatch:
 
 env:
@@ -26,11 +26,17 @@ jobs:
       run: |
         Install-Module -Name Az.KeyVault -Force
 
+    - name: Run PSScriptAnalyzer
+      uses: microsoft/psscriptanalyzer-action@v1.1
+      with:
+        path: ./src
+        settings: ./vscode/PSScriptAnalyzerSettings.psd1
+
     - name: Run Tests
       shell: pwsh
       run: |
         $testParams = @{
-          ModulePath            = './GitHubTools.psm1'
+          CoveragePath          = './GitHubTools.psm1'
           CoveragePercentTarget = $env:CODE_COVERAGE_PERCENT_TARGET
         }
 

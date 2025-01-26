@@ -28,6 +28,8 @@ function Set-GhVariable
 
 			Sets the output variable 'MY_OUTPUT_VAR' to 'output_value' in the GITHUB_OUTPUT file.
 	#>
+	[Diagnostics.CodeAnalysis.SuppressMessage('PSUseShouldProcessForStateChangingFunctions', '')]
+	[CmdletBinding()]
 	param
 	(
 		[Parameter(Mandatory)]

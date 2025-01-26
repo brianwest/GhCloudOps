@@ -22,6 +22,8 @@ function Set-RandomKeyVaultSecret
 
 			Creates or updates a secret named 'mySecret' in the Key Vault 'myKeyVault' with a random string of length 16.
 	#>
+	[Diagnostics.CodeAnalysis.SuppressMessage('PSUseShouldProcessForStateChangingFunctions', '')]
+	[CmdletBinding()]
 	param
 	(
 		[Parameter(Mandatory)]

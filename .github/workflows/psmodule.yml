@@ -12,9 +12,3 @@ jobs:
 
       - name: Initialize environment
         uses: PSModule/Initialize-PSModule@main
-
-      - name: Test-PSModule
-        uses: PSModule/Test-PSModule@main
-        with:
-          Path: src
-          TestType: SourceCode
