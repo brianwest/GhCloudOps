@@ -54,7 +54,7 @@ task clean_output {
     }
 }
 
-task test {
+task test install_modules {
     $config = New-PesterConfiguration
     $config.Run.Path = $testPath
     $config.CodeCoverage.Enabled = $true
