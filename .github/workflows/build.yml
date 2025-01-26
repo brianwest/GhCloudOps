@@ -5,9 +5,10 @@ on:
     branches:
       - main
     paths:
-      - 'src/**'
-      - 'build.ps1'
-      - '.github/workflows/build.yml'
+      - src/**
+      - build.ps1
+      - .github/workflows/build.yml
+
   workflow_dispatch:
     inputs:
       projectUri:
@@ -24,12 +25,12 @@ on:
         description: The version of the module to build
         type: string
         required: false
-        default: 0.0.
+        default: 0.0.0
 
 env:
-  PROJECT_URI: ${{ github.event.inputs.projectUri }}
-  RELEASE_NOTES: ${{ github.event.inputs.releaseNotes }}
-  MODULE_VERSION: ${{ github.event.inputs.moduleVersion }}
+  PROJECT_URI: https://github.com/brianwest/github-tools
+  RELEASE_NOTES: No release notes provided
+  MODULE_VERSION: 0.0.0
 
 jobs:
   build:
@@ -40,6 +41,26 @@ jobs:
     - name: Install InvokeBuild Module
       shell: pwsh
       run: Install-Module -Name InvokeBuild -Force
+
+    - name: Set Environment Variables
+      shell: pwsh
+      run: |
+        Import-Module ./src/GitHubTools.psm1
+
+        if ('${{ github.event.inputs.projectUri }}')
+        {
+          Set-GhVariable -Name PROJECT_URI -Value '${{ github.event.inputs.projectUri }}'
+        }
+
+        if ('${{ github.event.inputs.releaseNotes }}')
+        {
+          Set-GhVariable -Name RELEASE_NOTES -Value '${{ github.event.inputs.releaseNotes }}'
+        }
+
+        if ('${{ github.event.inputs.moduleVersion }}')
+        {
+          Set-GhVariable -Name MODULE_VERSION -Value '${{ github.event.inputs.moduleVersion }}'
+        }
 
     - name: Build Module
       shell: pwsh
