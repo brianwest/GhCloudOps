@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - 'src/**'
+      - 'build.ps1'
       - '.github/workflows/build.yml'
   workflow_dispatch:
 
@@ -17,5 +18,8 @@ jobs:
 
     - name: Install InvokeBuild Module
       shell: pwsh
-      run: |
-        Install-Module -Name InvokeBuild -Force
+      run: Install-Module -Name InvokeBuild -Force
+
+    - name: Build Module
+      shell: pwsh
+      run: Invoke-Build -File ./build.ps1 -Task Build

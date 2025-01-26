@@ -3,7 +3,7 @@
     # RootModule = ''
 
     # Version number of this module.
-    ModuleVersion     = '0.0.0'
+    # ModuleVersion     = '0.0.0'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -94,13 +94,13 @@
             # LicenseUri = ''
 
             # A URL to the main website for this project.
-            # ProjectUri = ''
+            ProjectUri = ''
 
             # A URL to an icon representing this module.
             # IconUri = ''
 
             # ReleaseNotes of this module
-            # ReleaseNotes = ''
+            ReleaseNotes = ''
 
             # Prerelease string of this module
             # Prerelease = ''
@@ -109,9 +109,7 @@
             # RequireLicenseAcceptance = $false
 
             # External dependent modules of this module
-            ExternalModuleDependencies = @(
-                @{ ModuleName = 'Az.KeyVault'; ModuleVersion = '6.3.1' }
-            )
+            ExternalModuleDependencies = 'Az.KeyVault'
 
         } # End of PSData hashtable
 
