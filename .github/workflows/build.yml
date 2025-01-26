@@ -34,9 +34,9 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Install External Modules
+    - name: Install InvokeBuild Module
       shell: pwsh
-      run: Install-Module -Name InvokeBuild, Az.KeyVault -Force
+      run: Install-Module -Name InvokeBuild -Force
 
     - name: Set Environment Variables
       shell: pwsh

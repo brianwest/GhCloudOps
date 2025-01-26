@@ -152,6 +152,6 @@ task update_manifest clean_output, build_module, {
     New-ModuleManifest @manifestParams
 }
 
-task build clean_output, build_module, update_manifest
+task build install_modules, clean_output, build_module, update_manifest
 
 task local_build set_environment_variables, install_modules, clean_output, build_module, update_manifest
