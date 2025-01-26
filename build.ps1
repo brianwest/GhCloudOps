@@ -20,6 +20,8 @@ task set_environment_variables {
 }
 
 task install_modules {
+    $currentPath = $env:PSModulePath
+    $env:PSModulePath = '{0};{1}' -f $currentPath, $outputFolder
     $projectRequiredModules = $requiredModules.Modules
     $moduleRequiredModules = (Import-PowerShellDataFile -Path $manifestPath).RequiredModules
     $combinedRequiredModules = $projectRequiredModules + $moduleRequiredModules
@@ -34,11 +36,9 @@ task install_modules {
         if ($null -eq $module)
         {
             Save-Module @requiredModuleParams -Path $outputFolder -Force
+            Import-Module -Name $requiredModule.ModuleName -Force
         }
     }
-
-    $currentPath = $env:PSModulePath
-    $env:PSModulePath = '{0};{1}' -f $currentPath, $outputFolder
 }
 
 task clean_output {
