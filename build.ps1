@@ -20,6 +20,7 @@ task set_environment_variables {
 }
 
 task install_modules {
+    Import-Module -Name PowerShellGet -Force
     $currentPath = $env:PSModulePath
     $env:PSModulePath = '{0};{1}' -f $currentPath, $outputFolder
     $projectRequiredModules = $requiredModules.Modules
