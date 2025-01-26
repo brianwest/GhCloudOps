@@ -6,7 +6,7 @@ on:
       - main
     paths:
       - 'tests/**'
-      - 'GitHubTools.psm1'
+      - 'src/**'
       - 'Run-Test.ps1'
       - '.github/workflows/tests.yml'
   workflow_dispatch:
@@ -29,14 +29,14 @@ jobs:
     - name: Run PSScriptAnalyzer
       uses: microsoft/psscriptanalyzer-action@v1.1
       with:
-        path: ./src
+        path: ${{ github.workspace }}/src
         settings: ${{ github.workspace }}/.vscode/PSScriptAnalyzerSettings.psd1
 
     - name: Run Tests
       shell: pwsh
       run: |
         $testParams = @{
-          CoveragePath          = './GitHubTools.psm1'
+          CoveragePath          = './src/functions'
           CoveragePercentTarget = $env:CODE_COVERAGE_PERCENT_TARGET
         }
 
