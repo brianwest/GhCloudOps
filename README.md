@@ -53,11 +53,13 @@ param nullTest = null
 Sets GitHub Actions variables during workflow execution.
 
 Environment variables can be set as follows:
+
 ```powershell
 Set-GhVariable -Name 'DEPLOY_ENV' -Value 'production'
 ```
 
 Output variables can be set as follows:
+
 ```powershell
 Set-GhVariable -Name 'DEPLOY_URL' -Value 'https://example.com' -IsOutput
 ```
@@ -75,12 +77,12 @@ Set-RandomKeyVaultSecret -KeyVaultName 'my-vault' -SecretName 'app-secret' -Leng
 The module includes Pester tests located in the [tests](tests) directory. To run the tests:
 
 ```powershell
-Invoke-Pester tests/*.tests.ps1
+Invoke-Build -File ./build.ps1 -Task Test
 ```
 
 ## Requirements
 
-- PowerShell 5.1 or higher
+- PowerShell 7
 - Az PowerShell module (for Key Vault operations)
 - GitHub Actions environment (for `Set-GhVariable`)
 
