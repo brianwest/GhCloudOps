@@ -16,7 +16,7 @@ on:
         description: The URI of the project to build
         type: string
         required: false
-        default: https://github.com/brianwest/github-tools
+        default: https://github.com/brianwest/GitHubTools
       releaseNotes:
         description: Release notes for the build
         type: string

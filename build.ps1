@@ -15,8 +15,36 @@ $outputFolder = Join-Path -Path $PSScriptRoot -ChildPath 'output'
 
 task set_environment_variables {
     $env:MODULE_VERSION = '0.0.0'
-    $env:PROJECT_URI = 'https://github.com/brianwest/github-tools'
+    $env:PROJECT_URI = 'https://github.com/brianwest/GitHubTools'
     $env:RELEASE_NOTES = 'Only for testing local build'
+}
+
+task install_modules {
+    $pesterParams = @{
+        Name            = 'Pester'
+        RequiredVersion = '5.7.1'
+    }
+
+    $pester = Get-InstalledModule @pesterParams -ErrorAction SilentlyContinue
+    if ($null -eq $pester)
+    {
+        Install-Module @pesterParams -Force
+    }
+
+    $requiredModules = (Import-PowerShellDataFile -Path $manifestPath).RequiredModules
+    foreach ($requiredModule in $requiredModules)
+    {
+        $requiredModuleParams = @{
+            Name            = $requiredModule.Name
+            RequiredVersion = $requiredModule.Version
+        }
+
+        $module = Get-InstalledModule @requiredModuleParams -ErrorAction SilentlyContinue
+        if ($null -eq $module)
+        {
+            Install-Module @requiredModuleParams -Force
+        }
+    }
 }
 
 task clean_output {
@@ -126,4 +154,4 @@ task update_manifest clean_output, build_module, {
 
 task build clean_output, build_module, update_manifest
 
-task local_build set_environment_variables, clean_output, build_module, update_manifest
+task local_build set_environment_variables, install_modules, clean_output, build_module, update_manifest
