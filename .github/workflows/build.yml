@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - src/**
+      - tests/**
       - build.ps1
       - .github/workflows/build.yml
 
@@ -38,9 +39,9 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Install InvokeBuild Module
+    - name: Install External Modules
       shell: pwsh
-      run: Install-Module -Name InvokeBuild -Force
+      run: Install-Module -Name InvokeBuild, Az.KeyVault -Force
 
     - name: Set Environment Variables
       shell: pwsh
@@ -66,11 +67,18 @@ jobs:
 
     - name: Build Module
       shell: pwsh
-      run: Invoke-Build -File ./build.ps1 -Task Build
+      run: Invoke-Build -File ./build.ps1 -Task Test, Build
+
+    - name: Upload Code Coverage
+      if: ${{ success() }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: code-coverage-report
+        path: ${{ github.workspace }}/tests/coverage.xml
 
     - name: Upload Built Module
       if: ${{ success() }}
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ env.REPO_NAME }}-module-${{ env.MODULE_VERSION }}
+        name: ${{ env.REPO_NAME }}-${{ env.MODULE_VERSION }}
         path: ${{ github.workspace }}/output
