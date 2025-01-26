@@ -1,43 +1,43 @@
+<#
+	.SYNOPSIS
+		Converts tokenized bicep parameter files to expanded files using a token map.
+
+	.DESCRIPTION
+		Converts tokenized bicep parameter files to expanded files using a token map.  The token map is a hashtable
+		where the key is the token and the value is the replacement value.  The token is in the format '{{ token }}'.
+		The function reads the input file line by line and replaces the tokens with the corresponding values.  The
+		expanded content is written to the output file.  The function also checks for unmatched tokens and unused
+		tokens.
+
+	.PARAMETER InputFile
+		The path to the input file.
+
+	.PARAMETER OutputFile
+		The path to the output file.
+
+	.PARAMETER TokenMap
+		The hashtable containing the token map.
+
+	.EXAMPLE
+		$tokenParams = @{
+			InputFile = 'C:\input.txt'
+			OutputFile = 'C:\output.txt'
+			TokenMap = @{
+				string = 'string'
+				int    = 1
+				bool   = $true
+				null   = $null
+			}
+		}
+
+		Convert-Token @tokenParams
+
+		Converts the input file 'C:\input.txt' to the output file 'C:\output.txt' using the token map.
+		The token map is a hashtable where '{{ string }}' is replaced with 'string', '{{ int }}' is replaced with 1,
+		'{{ bool }}' is replaced with true, '{{ null }}' is replaced with null.
+#>
 function Convert-Token
 {
-	<#
-		.SYNOPSIS
-			Converts tokenized bicep parameter files to expanded files using a token map.
-
-		.DESCRIPTION
-			Converts tokenized bicep parameter files to expanded files using a token map.  The token map is a hashtable
-			where the key is the token and the value is the replacement value.  The token is in the format '{{ token }}'.
-			The function reads the input file line by line and replaces the tokens with the corresponding values.  The
-			expanded content is written to the output file.  The function also checks for unmatched tokens and unused
-			tokens.
-
-		.PARAMETER InputFile
-			The path to the input file.
-
-		.PARAMETER OutputFile
-			The path to the output file.
-
-		.PARAMETER TokenMap
-			The hashtable containing the token map.
-
-		.EXAMPLE
-			$tokenParams = @{
-				InputFile = 'C:\input.txt'
-				OutputFile = 'C:\output.txt'
-				TokenMap = @{
-					string = 'string'
-					int    = 1
-					bool   = $true
-					null   = $null
-				}
-			}
-
-			Convert-Token @tokenParams
-
-			Converts the input file 'C:\input.txt' to the output file 'C:\output.txt' using the token map.
-			The token map is a hashtable where '{{ string }}' is replaced with 'string', '{{ int }}' is replaced with 1,
-			'{{ bool }}' is replaced with true, '{{ null }}' is replaced with null.
-	#>
 	[CmdletBinding()]
 	param
 	(
