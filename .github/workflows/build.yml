@@ -70,5 +70,5 @@ jobs:
       if: ${{ success() }}
       uses: actions/upload-artifact@v4
       with:
-        name: module-artifact
+        name: ${{ github.repository }}-module-${{ env.MODULE_VERSION }}
         path: ${{ github.workspace }}/output
