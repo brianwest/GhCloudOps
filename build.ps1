@@ -49,7 +49,9 @@ task install_modules clean_output, {
         {
             $modulePath = Join-Path -Path $outputFolder -ChildPath $requiredModule.ModuleName
             Save-Module @requiredModuleParams -Path $outputFolder -Force
+            Write-Host -Object ('Module {0} version {1} installed to path {2}' -f $requiredModule.ModuleName, $requiredModule.ModuleVersion, $modulePath)
             Import-Module -Name $modulePath -Force
+            Write-Host -Object ('Module {0} version {1} imported' -f $requiredModule.ModuleName, $requiredModule.ModuleVersion)
         }
     }
 }
