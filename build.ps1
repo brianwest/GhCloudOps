@@ -19,10 +19,20 @@ task set_environment_variables {
     $env:RELEASE_NOTES = 'Only for testing local build'
 }
 
-task install_modules {
-    Import-Module -Name PowerShellGet -Force
+task clean_output {
+    if (Test-Path -Path $outputFolder)
+    {
+        Remove-Item -Path $outputFolder -Recurse -Force
+    }
+}
+
+task install_modules clean_output, {
     $currentPath = $env:PSModulePath
-    $env:PSModulePath = '{0};{1}' -f $currentPath, $outputFolder
+    if (-not $env:PSModulePath.Contains($outputFolder))
+    {
+        $env:PSModulePath = '{0};{1}' -f $currentPath, $outputFolder
+    }
+
     $projectRequiredModules = $requiredModules.Modules
     $moduleRequiredModules = (Import-PowerShellDataFile -Path $manifestPath).RequiredModules
     $combinedRequiredModules = $projectRequiredModules + $moduleRequiredModules
@@ -36,16 +46,10 @@ task install_modules {
         $module = Get-InstalledModule @requiredModuleParams -ErrorAction SilentlyContinue
         if ($null -eq $module)
         {
+            $modulePath = Join-Path -Path $outputFolder -ChildPath $requiredModule.ModuleName
             Save-Module @requiredModuleParams -Path $outputFolder -Force
-            Import-Module -Name $requiredModule.ModuleName -Force
+            Import-Module -Name $modulePath -Force
         }
-    }
-}
-
-task clean_output {
-    if (Test-Path -Path $outputFolder)
-    {
-        Remove-Item -Path $outputFolder -Recurse -Force
     }
 }
 
