@@ -58,6 +58,7 @@ jobs:
     - name: Build Module
       shell: pwsh
       run: Invoke-Build -File ./build.ps1 -Task Test, Build
+      continue-on-error: false
 
     - name: Upload Code Coverage
       if: ${{ success() }}
