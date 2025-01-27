@@ -1,3 +1,4 @@
 /tests/helpers/output/*
 /tests/coverage.xml
+/tests/testResults.xml
 /output
