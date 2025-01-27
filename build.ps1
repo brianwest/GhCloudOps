@@ -58,28 +58,50 @@ task install_modules clean_output, {
 }
 
 task test install_modules, {
+    $coveragePath = Join-Path -Path $testPath -ChildPath 'coverage.xml'
+    $resultPath = Join-Path -Path $testPath -ChildPath 'testResults.xml'
     $config = New-PesterConfiguration
     $config.Run.Path = $testPath
     $config.CodeCoverage.Enabled = $true
     $config.CodeCoverage.CoveragePercentTarget = $coveragePercentTarget
     $config.CodeCoverage.Path = $coveragePath
-    $config.CodeCoverage.OutputPath = Join-Path -Path $testPath -ChildPath 'coverage.xml'
+    $config.CodeCoverage.OutputPath = $coveragePath
     $config.Output.Verbosity = 'Detailed'
+    $config.Output.CIFormat = 'GitHubActions'
+    $config.TestResult.Enabled = $true
+    $config.TestResult.OutputPath = $resultPath
     Invoke-Pester -Configuration $config
 
-    $jacocoReportPath = Join-Path -Path $testPath -ChildPath 'coverage.xml'
-
-    if (Test-Path -Path $jacocoReportPath)
+    if (Test-Path -Path $resultPath)
     {
-        [xml]$jacocoReport = Get-Content $jacocoReportPath
-
-        if ($null -eq $jacocoReport.report.counter)
+        [xml]$testResults = Get-Content -Path $resultPath
+        if ($testResults.'test-results'.failures -gt 0)
         {
-            $noCoverage = "No coverage data found in JaCoCo report at path '{0}'" -f $jacocoReportPath
+            throw ('{0} tests failed.' -f $testResults.'test-results'.failures)
+        }
+        else
+        {
+            $successMessage = 'All tests passed.'
+            Write-Host -Object $successMessage
+        }
+    }
+    else
+    {
+        $noResults = "Pester test results not found at path '{0}'" -f $resultPath
+        throw $noResults
+    }
+
+    if (Test-Path -Path $coveragePath)
+    {
+        [xml]$coverageReport = Get-Content $coveragePath
+
+        if ($null -eq $coverageReport.report.counter)
+        {
+            $noCoverage = "No coverage data found in coverage report at path '{0}'" -f $coveragePath
             throw $noCoverage
         }
 
-        $coverage = ($jacocoReport.report.counter).Where({ $_.type -eq 'INSTRUCTION' })
+        $coverage = ($coverageReport.report.counter).Where({ $_.type -eq 'INSTRUCTION' })
         $covered = [int]$coverage.covered
         $missed = [int]$coverage.missed
         $total = $covered + $missed
@@ -93,12 +115,12 @@ task test install_modules, {
         else
         {
             $successMessage = 'Coverage percentage is {0}% and target is {1}%.' -f $percentageCovered, $config.CodeCoverage.CoveragePercentTarget.Value
-            Write-Host -Object $successMessage -ForegroundColor Green
+            Write-Host -Object $successMessage
         }
     }
     else
     {
-        $noReport = "JaCoCo report not found at path '{0}'" -f $jacocoReportPath
+        $noReport = "Coverage report not found at path '{0}'" -f $coveragePath
         throw $noReport
     }
 }
