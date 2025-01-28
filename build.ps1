@@ -27,7 +27,6 @@ task clean_output {
 }
 
 task install_modules clean_output, {
-    Import-Module PowerShellGet
     New-Item -ItemType Directory -Path $outputFolder -Force
     $currentPath = $env:PSModulePath
     if (-not $env:PSModulePath.Contains($outputFolder))
