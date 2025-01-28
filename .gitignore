@@ -1,4 +1,4 @@
-/tests/helpers/output/*
+/requiredModules
 /tests/coverage.xml
 /tests/testResults.xml
 /output

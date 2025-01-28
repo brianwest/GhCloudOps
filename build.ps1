@@ -1,17 +1,23 @@
 #requires -Version 7.0
 
-$requiredModules = Import-PowerShellDataFile -Path (Join-Path -Path $PSScriptRoot -ChildPath 'RequiredModules.psd1')
-$testPath = Join-Path -Path $PSScriptRoot -ChildPath 'tests'
-$coveragePercentTarget = 95
 $sourcePath = Join-Path -Path $PSScriptRoot -ChildPath 'src'
 $moduleName = (Get-ChildItem -Path $sourcePath -Filter '*.psm1').BaseName
 $moduleFile = '{0}.psm1' -f $moduleName
 $manifestFile = '{0}.psd1' -f $moduleName
-$coveragePath = Join-Path -Path $sourcePath -ChildPath $moduleFile
 $manifestPath = Join-Path -Path $sourcePath -ChildPath $manifestFile
 $publicFunctions = Get-ChildItem -Path (Join-Path -Path $sourcePath -ChildPath 'public') -Filter '*.ps1' -Recurse
 $privateFunctions = Get-ChildItem -Path (Join-Path -Path $sourcePath -ChildPath 'private') -Filter '*.ps1' -Recurse
 $outputFolder = Join-Path -Path $PSScriptRoot -ChildPath 'output'
+$requiredModulesOutputPath = Join-Path -Path $sourcePath -ChildPath 'requiredModules'
+$projectRequiredModules = (Import-PowerShellDataFile -Path (Join-Path -Path $PSScriptRoot -ChildPath 'RequiredModules.psd1')).Modules
+$moduleRequiredModules = (Import-PowerShellDataFile -Path $manifestPath).RequiredModules
+$testPath = Join-Path -Path $PSScriptRoot -ChildPath 'tests'
+$coveragePercentTarget = 95
+$resultPath = Join-Path -Path $testPath -ChildPath 'testResults.xml'
+$coveragePath = Join-Path -Path $testPath -ChildPath 'coverage.xml'
+$releaseFolder = Join-Path -Path $outputFolder -ChildPath $moduleName -AdditionalChildPath $env:MODULE_VERSION
+$builtModulePath = Join-Path -Path $releaseFolder -ChildPath $moduleFile
+$builtManifestPath = Join-Path -Path $releaseFolder -ChildPath $manifestFile
 
 task set_environment_variables {
     $env:MODULE_VERSION = '0.0.0'
@@ -23,19 +29,19 @@ task clean_output {
     if (Test-Path -Path $outputFolder)
     {
         Remove-Item -Path $outputFolder -Recurse -Force
+        Remove-Item -Path $requiredModulesOutputPath -Recurse -Force
     }
 }
 
 task install_modules clean_output, {
-    New-Item -ItemType Directory -Path $outputFolder -Force
+    Import-Module PowerShellGet
+    New-Item -ItemType Directory -Path $requiredModulesOutputPath -Force
     $currentPath = $env:PSModulePath
-    if (-not $env:PSModulePath.Contains($outputFolder))
+    if (-not $env:PSModulePath.Contains($requiredModulesOutputPath))
     {
-        $env:PSModulePath = '{0};{1}' -f $currentPath, $outputFolder
+        $env:PSModulePath = '{0};{1}' -f $currentPath, $requiredModulesOutputPath
     }
 
-    $projectRequiredModules = $requiredModules.Modules
-    $moduleRequiredModules = (Import-PowerShellDataFile -Path $manifestPath).RequiredModules
     $combinedRequiredModules = $projectRequiredModules + $moduleRequiredModules
     foreach ($requiredModule in $combinedRequiredModules)
     {
@@ -47,8 +53,8 @@ task install_modules clean_output, {
         $module = Get-InstalledModule @requiredModuleParams -ErrorAction SilentlyContinue
         if ($null -eq $module)
         {
-            $modulePath = Join-Path -Path $outputFolder -ChildPath $requiredModule.ModuleName
-            Save-Module @requiredModuleParams -Path $outputFolder -Force
+            $modulePath = Join-Path -Path $requiredModulesOutputPath -ChildPath $requiredModule.ModuleName
+            Save-Module @requiredModuleParams -Path $requiredModulesOutputPath -Force
             Write-Host -Object ('Module {0} version {1} installed to path {2}' -f $requiredModule.ModuleName, $requiredModule.ModuleVersion, $modulePath)
             Import-Module -Name $modulePath -Force
             Write-Host -Object ('Module {0} version {1} imported' -f $requiredModule.ModuleName, $requiredModule.ModuleVersion)
@@ -57,8 +63,6 @@ task install_modules clean_output, {
 }
 
 task test install_modules, {
-    $coveragePath = Join-Path -Path $testPath -ChildPath 'coverage.xml'
-    $resultPath = Join-Path -Path $testPath -ChildPath 'testResults.xml'
     $config = New-PesterConfiguration
     $config.Run.Path = $testPath
     $config.CodeCoverage.Enabled = $true
@@ -124,9 +128,6 @@ task test install_modules, {
 }
 
 task build_module clean_output, {
-    $script:releaseFolder = Join-Path -Path $outputFolder -ChildPath $moduleName -AdditionalChildPath $env:MODULE_VERSION
-    $script:builtModulePath = Join-Path -Path $releaseFolder -ChildPath $moduleFile
-
     New-Item -ItemType File -Path $builtModulePath -Force
     $script:functionsToExport = @()
     foreach ($publicFunction in $publicFunctions)
@@ -147,8 +148,6 @@ task build_module clean_output, {
 }
 
 task update_manifest clean_output, build_module, {
-    $builtManifestPath = Join-Path -Path $releaseFolder -ChildPath $manifestFile
-
     $manifest = Import-PowerShellDataFile -Path $manifestPath
     $manifest.FunctionsToExport = $script:functionsToExport
     $manifest.PrivateData.PSData.ProjectUri = $env:PROJECT_URI
