@@ -1,8 +1,5 @@
 Describe 'Set-RandomKeyVaultSecret' {
     BeforeAll {
-        $outputFolder = Join-Path -Path $PSScriptRoot -ChildPath 'output'
-        Import-Module -Name (Join-Path -Path $outputFolder -ChildPath 'Az.KeyVault') -Force
-
         $repoRoot = Split-Path -Path $PSScriptRoot -Parent
 		$modulePath = Join-Path -Path $repoRoot -ChildPath 'src' -AdditionalChildPath 'GitHubTools.psm1'
         Import-Module -Name $modulePath -Force

@@ -64,7 +64,7 @@ task test install_modules, {
     $config.Run.Path = $testPath
     $config.CodeCoverage.Enabled = $true
     $config.CodeCoverage.CoveragePercentTarget = $coveragePercentTarget
-    $config.CodeCoverage.Path = $coveragePath
+    $config.CodeCoverage.Path = $sourcePath
     $config.CodeCoverage.OutputPath = $coveragePath
     $config.Output.Verbosity = 'Detailed'
     $config.TestResult.Enabled = $true
