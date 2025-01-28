@@ -29,12 +29,16 @@ task clean_output {
     if (Test-Path -Path $outputFolder)
     {
         Remove-Item -Path $outputFolder -Recurse -Force
+    }
+
+    if (Test-Path -Path $requiredModulesOutputPath)
+    {
         Remove-Item -Path $requiredModulesOutputPath -Recurse -Force
     }
 }
 
 task install_modules clean_output, {
-    Import-Module PowerShellGet
+    Import-Module -Name 'PowerShellGet' -Force
     New-Item -ItemType Directory -Path $requiredModulesOutputPath -Force
     $currentPath = $env:PSModulePath
     if (-not $env:PSModulePath.Contains($requiredModulesOutputPath))
