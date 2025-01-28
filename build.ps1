@@ -67,7 +67,6 @@ task test install_modules, {
     $config.CodeCoverage.Path = $coveragePath
     $config.CodeCoverage.OutputPath = $coveragePath
     $config.Output.Verbosity = 'Detailed'
-    $config.Output.CIFormat = 'GitHubActions'
     $config.TestResult.Enabled = $true
     $config.TestResult.OutputPath = $resultPath
     Invoke-Pester -Configuration $config
