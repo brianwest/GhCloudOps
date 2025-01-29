@@ -39,7 +39,7 @@ param identity = '{{ identity }}'
 ```bicep
 using 'test.bicep'
 
-param stringTest = 'test'
+param name = 'test'
 
 param count = 1
 
