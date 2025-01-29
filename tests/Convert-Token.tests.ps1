@@ -9,13 +9,13 @@ Describe 'Convert-Token' {
 		$outputFile = Join-Path -Path 'TestDrive:' -ChildPath 'expanded.bicepparam'
 
 		$tokenMap = @{
-			string = 'string'
-			int    = 1
-			bool   = $true
-			null   = $null
+			name     = 'test'
+			count    = 1
+			enabled  = $true
+			identity = $null
 		}
 
-		$tempFile = join-path 'TestDrive:' -ChildPath 'tempfile.tmp'
+		$tempFile = Join-Path 'TestDrive:' -ChildPath 'tempfile.tmp'
 		Mock -CommandName 'New-TemporaryFile' -ModuleName 'GitHubTools' -MockWith { New-Item -ItemType File -Path $tempFile -Force }
 		Mock -CommandName 'Write-Error' -ModuleName 'GitHubTools'
 		Mock -CommandName 'Write-Warning' -ModuleName 'GitHubTools'
@@ -70,7 +70,7 @@ Describe 'Convert-Token' {
 	Context 'When tokens are missing from the token map' {
 		BeforeAll {
 			$unmatchedTokenMap = $tokenMap.Clone()
-			$unmatchedTokenMap.Remove('string')
+			$unmatchedTokenMap.Remove('name')
 		}
 
 		It 'Should thow' {

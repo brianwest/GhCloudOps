@@ -10,10 +10,10 @@ Converts tokenized Bicep parameter files by replacing tokens with values from a 
 
 ```powershell
 $tokenMap = @{
-    string = 'string'
-    int    = 1
-    bool   = $true
-    null   = $null
+    name     = 'test'
+    count    = 1
+    enabled  = $true
+    identity = $null
 }
 
 Convert-Token -InputFile 'params.bicepparam' -OutputFile 'expanded.bicepparam' -TokenMap $tokenMap
@@ -24,13 +24,13 @@ Convert-Token -InputFile 'params.bicepparam' -OutputFile 'expanded.bicepparam' -
 ```bicep
 using 'test.bicep'
 
-param stringTest = '{{ string }}'
+param name = '{{ name }}'
 
-param intTest = '{{ int }}'
+param count = '{{ count }}'
 
-param boolTest = '{{ bool }}'
+param enabled = '{{ enabled }}'
 
-param nullTest = '{{ null }}'
+param identity = '{{ identity }}'
 
 ```
 
@@ -39,13 +39,13 @@ param nullTest = '{{ null }}'
 ```bicep
 using 'test.bicep'
 
-param stringTest = 'string'
+param stringTest = 'test'
 
-param intTest = 1
+param count = 1
 
-param boolTest = true
+param enabled = true
 
-param nullTest = null
+param identity = null
 ```
 
 ### [`Set-GhVariable`](GitHubTools.psm1)

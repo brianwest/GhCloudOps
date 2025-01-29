@@ -1,15 +1,15 @@
-param stringTest string
+param name string
 
-param intTest string
+param count string
 
-param boolTest string
+param enabled string
 
-param nullTest string
+param identity string
 
-output stringTest string = stringTest
+output name string = name
 
-output intTest string = intTest
+output count string = count
 
-output boolTest string = boolTest
+output enabled string = enabled
 
-output nullTest string = nullTest
+output identity string = identity

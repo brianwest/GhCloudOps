@@ -1,9 +1,9 @@
 using 'test.bicep'
 
-param stringTest = '{{ string }}'
+param name = '{{ name }}'
 
-param intTest = '{{ int }}'
+param count = '{{ count }}'
 
-param boolTest = '{{ bool }}'
+param enabled = '{{ enabled }}'
 
-param nullTest = '{{ null }}'
+param identity = '{{ identity }}'
