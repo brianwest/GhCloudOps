@@ -39,7 +39,7 @@ task clean_output {
 
 task install_modules clean_output, {
     Import-Module -Name 'PowerShellGet' -Force
-    New-Item -ItemType Directory -Path $requiredModulesOutputPath -Force
+    $null = New-Item -ItemType Directory -Path $requiredModulesOutputPath -Force
     $currentPath = $env:PSModulePath
     if (-not $env:PSModulePath.Contains($requiredModulesOutputPath))
     {
@@ -59,9 +59,9 @@ task install_modules clean_output, {
         {
             $modulePath = Join-Path -Path $requiredModulesOutputPath -ChildPath $requiredModule.ModuleName
             Save-Module @requiredModuleParams -Path $requiredModulesOutputPath -Force
-            Write-Host -Object ('Module {0} version {1} installed to path {2}' -f $requiredModule.ModuleName, $requiredModule.ModuleVersion, $modulePath)
+            Write-Verbose -Message ('Module {0} version {1} installed to path {2}' -f $requiredModule.ModuleName, $requiredModule.ModuleVersion, $modulePath)
             Import-Module -Name $modulePath -Force
-            Write-Host -Object ('Module {0} version {1} imported' -f $requiredModule.ModuleName, $requiredModule.ModuleVersion)
+            Write-Verbose -Message ('Module {0} version {1} imported' -f $requiredModule.ModuleName, $requiredModule.ModuleVersion)
         }
     }
 }
@@ -132,7 +132,7 @@ task test install_modules, {
 }
 
 task build_module clean_output, {
-    New-Item -ItemType File -Path $builtModulePath -Force
+    $null = New-Item -ItemType File -Path $builtModulePath -Force
     $script:functionsToExport = @()
     foreach ($publicFunction in $publicFunctions)
     {
