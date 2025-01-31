@@ -19,6 +19,7 @@ Describe 'Convert-Token' {
 		Mock -CommandName 'New-TemporaryFile' -ModuleName 'GitHubTools' -MockWith { New-Item -ItemType File -Path $tempFile -Force }
 		Mock -CommandName 'Write-Error' -ModuleName 'GitHubTools'
 		Mock -CommandName 'Write-Warning' -ModuleName 'GitHubTools'
+		Mock -CommandName 'Write-Host' -ModuleName 'GitHubTools'
 	}
 
 	Context 'When parameters are properly configured' {
@@ -48,6 +49,12 @@ Describe 'Convert-Token' {
 
 		It 'Should not write a warning' {
 			Should -Not -Invoke 'Write-Warning' -Scope 'Context' -ModuleName 'GitHubTools'
+		}
+
+		It 'Should notify the user that tokens were replaced' {
+			Should -Invoke 'Write-Host' -Times 1 -Exactly -Scope 'Context' -ModuleName 'GitHubTools' -ParameterFilter {
+				$Object -eq ("Converted tokens in '{0}' to '{1}'" -f $inputFile, $outputFile)
+			}
 		}
 	}
 

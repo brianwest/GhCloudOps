@@ -119,8 +119,9 @@ function Convert-Token
 	}
 	else
 	{
-		New-Item -Path $OutputFile -ItemType File
+		$null = New-Item -Path $OutputFile -ItemType File
 	}
 
 	Set-Content -Path $OutputFile -Value (Get-Content -Path $temporaryFile)
+	Write-Host -Object ("Converted tokens in '{0}' to '{1}'" -f $InputFile, $OutputFile)
 }
