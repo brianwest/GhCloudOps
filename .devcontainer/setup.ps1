@@ -8,7 +8,7 @@ $crlfParams.FilePath = 'git'
 $crlfParams.ArgumentList = 'config', '--global', 'core.autocrlf', 'true'
 
 Start-Process @crlfParams
-Write-Host -Object 'Configured git to use CRLF line endings'
+Write-Host -Object 'Configured git to automatically convert line endings'
 
 $eolParams = $commonParams.Clone()
 $eolParams.FilePath = 'git'
