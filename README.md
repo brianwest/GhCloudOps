@@ -6,7 +6,9 @@ A PowerShell module providing utilities for GitHub Actions and Azure deployments
 
 ### [`Convert-Token`](GitHubTools.psm1)
 
-Converts tokenized Bicep parameter files by replacing tokens with values from a provided map. Useful for managing configuration across different environments.
+Converts tokenized .bicepparam, .json and .tfvars files by replacing tokens with values from a provided map. Useful for managing a single configuration file across different environments.
+
+#### Convert Bicep Parameter File
 
 ```powershell
 $tokenMap = @{
@@ -19,7 +21,7 @@ $tokenMap = @{
 Convert-Token -InputFile 'params.bicepparam' -OutputFile 'expanded.bicepparam' -TokenMap $tokenMap
 ```
 
-#### Tokenized Parameter File
+#### Tokenized Bicep Parameter File
 
 ```bicep
 using 'test.bicep'
@@ -34,7 +36,7 @@ param identity = '{{ identity }}'
 
 ```
 
-#### Expanded Parameter File
+#### Expanded Bicep Parameter File
 
 ```bicep
 using 'test.bicep'
@@ -46,6 +48,80 @@ param count = 1
 param enabled = true
 
 param identity = null
+```
+
+#### Convert Json Parameter File
+
+```powershell
+$tokenMap = @{
+    name     = 'test'
+    count    = 1
+    enabled  = $true
+    identity = $null
+}
+
+Convert-Token -InputFile 'params.json' -OutputFile 'expanded.json' -TokenMap $tokenMap
+```
+
+#### Tokenized Json Parameter File
+
+```json
+{
+    "name": "{{ name }}",
+    "count": "{{ count }}",
+    "enabled": "{{ enabled }}",
+    "identity": "{{ identity }}"
+}
+
+```
+
+#### Expanded Json Parameter File
+
+```json
+{
+    "name": "test",
+    "count": 1,
+    "enabled": true,
+    "identity": null
+}
+
+```
+
+#### Convert Terraform Tfvars File
+
+```powershell
+$tokenMap = @{
+    name     = 'test'
+    count    = 1
+    enabled  = $true
+    identity = $null
+}
+
+Convert-Token -InputFile 'params.tfvars' -OutputFile 'expanded.tfvars' -TokenMap $tokenMap
+```
+
+#### Tokenized Terraform Tfvars File
+
+```hcl
+name = "{{ name }}"
+
+count = "{{ count }}"
+
+enabled = "{{ enabled }}"
+
+identity = "{{ identity }}"
+```
+
+#### Expanded Terraform Tfvars File
+
+```hcl
+name = "test"
+
+count = 1
+
+enabled = true
+
+identity = null
 ```
 
 ### [`Set-GhVariable`](GitHubTools.psm1)

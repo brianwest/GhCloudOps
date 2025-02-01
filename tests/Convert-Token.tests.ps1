@@ -5,14 +5,28 @@ Describe 'Convert-Token' {
 		Import-Module -Name $modulePath -Force
 
 		$helperPath = Join-Path -Path $repoRoot -ChildPath 'tests' -AdditionalChildPath 'helpers'
-		$inputFile = Join-Path -Path $helperPath -ChildPath 'test.bicepparam'
-		$outputFile = Join-Path -Path 'TestDrive:' -ChildPath 'expanded.bicepparam'
+		$bicepFile = Join-Path -Path $helperPath -ChildPath 'test.bicepparam'
+		$bicepOutputFile = Join-Path -Path 'TestDrive:' -ChildPath 'expanded.bicepparam'
+		$script:terraformFile = Join-Path -Path $helperPath -ChildPath 'test.tfvars'
+		$script:terraformOutputFile = Join-Path -Path 'TestDrive:' -ChildPath 'expanded.tfvars'
+		$script:jsonFile = Join-Path -Path $helperPath -ChildPath 'test.json'
+		$script:jsonOutputFile = Join-Path -Path 'TestDrive:' -ChildPath 'expanded.json'
+		$script:unsupportedFile = Join-Path -Path $helperPath -ChildPath 'test.txt'
+		$script:unsupportedOutputFile = Join-Path -Path 'TestDrive:' -ChildPath 'expanded.txt'
+
+		$script:pattern = '\{\{[^\}]+\}\}'
 
 		$tokenMap = @{
 			name     = 'test'
 			count    = 1
 			enabled  = $true
 			identity = $null
+		}
+
+		$script:bicepParams = @{
+			InputFile  = $bicepFile
+			OutputFile = $bicepOutputFile
+			TokenMap   = $tokenMap
 		}
 
 		$tempFile = Join-Path 'TestDrive:' -ChildPath 'tempfile.tmp'
@@ -36,11 +50,10 @@ Describe 'Convert-Token' {
 		}
 	}
 
-	Context 'When tokens match tokenized values' {
+	Context 'When parameter file has a bicepparam file extension' {
 		BeforeAll {
-			Convert-Token -InputFile $inputFile -OutputFile $outputFile -TokenMap $tokenMap
-			$pattern = '\{\{[^\}]+\}\}'
-			$unmatchedTokens = Select-String -Path $outputFile -Pattern $pattern -AllMatches
+			Convert-Token @bicepParams
+			$script:unmatchedTokens = Select-String -Path $bicepOutputFile -Pattern $pattern -AllMatches
 		}
 
 		It 'Should replace tokens with tokenized values' {
@@ -53,7 +66,61 @@ Describe 'Convert-Token' {
 
 		It 'Should notify the user that tokens were replaced' {
 			Should -Invoke 'Write-Host' -Times 1 -Exactly -Scope 'Context' -ModuleName 'GitHubTools' -ParameterFilter {
-				$Object -eq ("Converted tokens in '{0}' to '{1}'" -f $inputFile, $outputFile)
+				$Object -eq ("Converted tokens in '{0}' to '{1}'" -f $bicepFile, $bicepOutputFile)
+			}
+		}
+	}
+
+	Context 'When parameter file has a tfvars file extension' {
+		BeforeAll {
+			$terraformParams = @{
+				InputFile  = $terraformFile
+				OutputFile = $terraformOutputFile
+				TokenMap   = $tokenMap
+			}
+
+			Convert-Token @terraformParams
+			$script:unmatchedTokens = Select-String -Path $terraformOutputFile -Pattern $pattern -AllMatches
+		}
+
+		It 'Should replace tokens with tokenized values' {
+			$unmatchedTokens | Should -BeNullOrEmpty
+		}
+
+		It 'Should not write a warning' {
+			Should -Not -Invoke 'Write-Warning' -Scope 'Context' -ModuleName 'GitHubTools'
+		}
+
+		It 'Should notify the user that tokens were replaced' {
+			Should -Invoke 'Write-Host' -Times 1 -Exactly -Scope 'Context' -ModuleName 'GitHubTools' -ParameterFilter {
+				$Object -eq ("Converted tokens in '{0}' to '{1}'" -f $terraformFile, $terraformOutputFile)
+			}
+		}
+	}
+
+	Context 'When parameter file has a json file extension' {
+		BeforeAll {
+			$jsonParams = @{
+				InputFile  = $jsonFile
+				OutputFile = $jsonOutputFile
+				TokenMap   = $tokenMap
+			}
+
+			Convert-Token @jsonParams
+			$script:unmatchedTokens = Select-String -Path $jsonOutputFile -Pattern $pattern -AllMatches
+		}
+
+		It 'Should replace tokens with tokenized values' {
+			$unmatchedTokens | Should -BeNullOrEmpty
+		}
+
+		It 'Should not write a warning' {
+			Should -Not -Invoke 'Write-Warning' -Scope 'Context' -ModuleName 'GitHubTools'
+		}
+
+		It 'Should notify the user that tokens were replaced' {
+			Should -Invoke 'Write-Host' -Times 1 -Exactly -Scope 'Context' -ModuleName 'GitHubTools' -ParameterFilter {
+				$Object -eq ("Converted tokens in '{0}' to '{1}'" -f $jsonFile, $jsonOutputFile)
 			}
 		}
 	}
@@ -62,15 +129,31 @@ Describe 'Convert-Token' {
 		BeforeAll {
 			Mock -CommandName 'Clear-Content' -ModuleName 'GitHubTools'
 
-			New-Item -ItemType File -Path $outputFile -Force
+			New-Item -ItemType File -Path $bicepOutputFile -Force
 
-			Convert-Token -InputFile $inputFile -OutputFile $outputFile -TokenMap $tokenMap
+			Convert-Token @bicepParams
 		}
 
 		It 'Should clear the contents of the output file' {
 			Should -Invoke 'Clear-Content' -Times 1 -Exactly -Scope 'Context' -ModuleName 'GitHubTools' -ParameterFilter {
-				$Path -eq $outputFile
+				$Path -eq $bicepOutputFile
 			}
+		}
+	}
+
+	Context 'When file extension is not supported' {
+		BeforeAll {
+			$script:unsupportedParams = @{
+				InputFile  = $unsupportedFile
+				OutputFile = $unsupportedOutputFile
+				TokenMap   = $tokenMap
+			}
+
+			$script:item = Get-Item -Path $unsupportedFile
+		}
+
+		It 'Should throw an error' {
+			{ Convert-Token @unsupportedParams } | Should -Throw -ExpectedMessage ('Unsupported file type: {0}' -f $item.Extension)
 		}
 	}
 
@@ -81,7 +164,7 @@ Describe 'Convert-Token' {
 		}
 
 		It 'Should thow' {
-			{ Convert-Token -InputFile $inputFile -OutputFile $outputFile -TokenMap $unmatchedTokenMap } | Should -Throw
+			{ Convert-Token -InputFile $bicepFile -OutputFile $bicepOutputFile -TokenMap $unmatchedTokenMap } | Should -Throw
 		}
 
 		It 'Should write an error' {
@@ -98,7 +181,7 @@ Describe 'Convert-Token' {
 			$extraToken = 'extra'
 			$extraTokenMap.Add($extraToken, 'extra')
 
-			Convert-Token -InputFile $inputFile -OutputFile $outputFile -TokenMap $extraTokenMap
+			Convert-Token -InputFile $bicepFile -OutputFile $bicepOutputFile -TokenMap $extraTokenMap
 		}
 
 		It 'Should write a warning' {
@@ -110,13 +193,13 @@ Describe 'Convert-Token' {
 
 	Context 'When input file does not exist' {
 		It 'Should throw' {
-			{ Convert-Token -InputFile 'nonexistent.bicepparam' -OutputFile $outputFile -TokenMap $tokenMap } | Should -Throw
+			{ Convert-Token -InputFile 'nonexistent.bicepparam' -OutputFile $bicepOutputFile -TokenMap $tokenMap } | Should -Throw
 		}
 	}
 
 	Context 'When token map is empty' {
 		It 'Should throw' {
-			{ Convert-Token -InputFile $inputFile -OutputFile $outputFile -TokenMap @{} } | Should -Throw
+			{ Convert-Token -InputFile $bicepFile -OutputFile $bicepOutputFile -TokenMap @{} } | Should -Throw
 		}
 	}
 }

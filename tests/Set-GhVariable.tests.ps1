@@ -4,12 +4,12 @@ Describe 'Set-GhVariable' {
 		$modulePath = Join-Path -Path $repoRoot -ChildPath 'src' -AdditionalChildPath 'GitHubTools.psm1'
         Import-Module -Name $modulePath -Force
 
-        $originalEnv = $env:GITHUB_ENV
+        $script:originalEnv = $env:GITHUB_ENV
         $envTemp = Join-Path -Path 'TestDrive:' -ChildPath 'envTemp'
         $envTempFile = New-Item -ItemType File -Path $envTemp -Force
         $env:GITHUB_ENV = $envTempFile.FullName
 
-        $originalOutput = $env:GITHUB_OUTPUT
+        $script:originalOutput = $env:GITHUB_OUTPUT
         $outputTemp = Join-Path -Path 'TestDrive:' -ChildPath 'outputTemp'
         $outputTempFile = New-Item -ItemType File -Path $outputTemp -Force
         $env:GITHUB_OUTPUT = $outputTempFile.FullName
@@ -33,7 +33,7 @@ Describe 'Set-GhVariable' {
             Set-GhVariable -Name 'VAR1' -Value $value1
             Set-GhVariable -Name 'VAR2' -Value $value2
 
-            $content = Get-Content $env:GITHUB_ENV
+            $script:content = Get-Content $env:GITHUB_ENV
         }
 
         It 'Should create multiple variables' {
@@ -50,7 +50,7 @@ Describe 'Set-GhVariable' {
             Set-GhVariable -Name 'OUT_VAR1' -Value $value1 -IsOutput
             Set-GhVariable -Name 'OUT_VAR2' -Value $value2 -IsOutput
 
-            $content = Get-Content $env:GITHUB_OUTPUT
+            $script:content = Get-Content $env:GITHUB_OUTPUT
         }
 
         It 'Should create multiple output variables' {

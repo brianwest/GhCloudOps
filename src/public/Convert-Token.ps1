@@ -56,6 +56,20 @@ function Convert-Token
 		$TokenMap
 	)
 
+	$item = Get-Item -LiteralPath $InputFile
+	if ($item.Extension -eq '.bicepparam')
+	{
+		$quotedString = "'{0}'"
+	}
+	elseif (($item.Extension -eq '.json') -or ($item.Extension -eq '.tfvars'))
+	{
+		$quotedString = '"{0}"'
+	}
+	else
+	{
+		throw ('Unsupported file type: {0}' -f $item.Extension)
+	}
+
 	$content = Get-Content -Path $InputFile
 	$temporaryFile = New-TemporaryFile
 	$usedTokens = New-Object -TypeName System.Collections.ArrayList
@@ -69,7 +83,7 @@ function Convert-Token
 				$value = $TokenMap[$key]
 				if ($null -eq $value)
 				{
-					$line = $line.Replace(("'{0}'" -f $token), ('null'.Replace("'", '')))
+					$line = $line.Replace(($quotedString -f $token), ('null'.Replace("'", '')))
 				}
 				elseif ($value.GetType() -eq [string])
 				{
@@ -77,11 +91,11 @@ function Convert-Token
 				}
 				elseif ($value.GetType() -eq [int])
 				{
-					$line = $line.Replace(("'{0}'" -f $token), $value)
+					$line = $line.Replace(($quotedString -f $token), $value)
 				}
 				elseif ($value.GetType() -eq [bool])
 				{
-					$line = $line.Replace(("'{0}'" -f $token), $value.ToString().ToLower())
+					$line = $line.Replace(($quotedString -f $token), $value.ToString().ToLower())
 				}
 
 				$null = $usedTokens.Add($key)
