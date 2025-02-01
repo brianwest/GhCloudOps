@@ -1,11 +1,11 @@
 Describe 'Set-RandomKeyVaultSecret' {
     BeforeAll {
         $repoRoot = Split-Path -Path $PSScriptRoot -Parent
-		$modulePath = Join-Path -Path $repoRoot -ChildPath 'src' -AdditionalChildPath 'GitHubTools.psm1'
+        $modulePath = Join-Path -Path $repoRoot -ChildPath 'src' -AdditionalChildPath 'AzGhOps.psm1'
         Import-Module -Name $modulePath -Force
 
-        Mock -CommandName 'Set-AzKeyVaultSecret' -ModuleName 'GitHubTools'
-        Mock -CommandName 'Write-Host' -ModuleName 'GitHubTools'
+        Mock -CommandName 'Set-AzKeyVaultSecret' -ModuleName 'AzGhOps'
+        Mock -CommandName 'Write-Host' -ModuleName 'AzGhOps'
     }
 
     Context 'When parameters are properly configured' {
@@ -37,7 +37,7 @@ Describe 'Set-RandomKeyVaultSecret' {
         }
 
         It 'Should set the secret in the key vault' {
-            Should -Invoke 'Set-AzKeyVaultSecret' -Times 1 -Exactly -Scope 'Context' -ModuleName 'GitHubTools' -ParameterFilter {
+            Should -Invoke 'Set-AzKeyVaultSecret' -Times 1 -Exactly -Scope 'Context' -ModuleName 'AzGhOps' -ParameterFilter {
                 $VaultName -eq $vault -and
                 $Name -eq $secret -and
                 $SecretValue.GetType().Name -eq 'SecureString'
@@ -45,7 +45,7 @@ Describe 'Set-RandomKeyVaultSecret' {
         }
 
         It 'Should notify the user that the secret has been set' {
-            Should -Invoke 'Write-Host' -Times 1 -Exactly -Scope 'Context' -ModuleName 'GitHubTools' -ParameterFilter {
+            Should -Invoke 'Write-Host' -Times 1 -Exactly -Scope 'Context' -ModuleName 'AzGhOps' -ParameterFilter {
                 $Object -eq ("Secret '{0}' set in Key Vault '{1}'." -f $secret, $vault)
             }
         }

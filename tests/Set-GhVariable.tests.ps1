@@ -1,7 +1,7 @@
 Describe 'Set-GhVariable' {
     BeforeAll {
         $repoRoot = Split-Path -Path $PSScriptRoot -Parent
-		$modulePath = Join-Path -Path $repoRoot -ChildPath 'src' -AdditionalChildPath 'GitHubTools.psm1'
+		$modulePath = Join-Path -Path $repoRoot -ChildPath 'src' -AdditionalChildPath 'AzGhOps.psm1'
         Import-Module -Name $modulePath -Force
 
         $script:originalEnv = $env:GITHUB_ENV

@@ -4,7 +4,7 @@ A PowerShell module providing utilities for GitHub Actions and Azure deployments
 
 ## Functions
 
-### [`Convert-Token`](GitHubTools.psm1)
+### [`Convert-Token`](AzGhOps.psm1)
 
 Converts tokenized .bicepparam, .json and .tfvars files by replacing tokens with values from a provided map. Useful for managing a single configuration file across different environments.
 
@@ -124,7 +124,7 @@ enabled = true
 identity = null
 ```
 
-### [`Set-GhVariable`](GitHubTools.psm1)
+### [`Set-GhVariable`](AzGhOps.psm1)
 
 Sets GitHub Actions variables during workflow execution.
 
@@ -140,7 +140,7 @@ Output variables can be set as follows:
 Set-GhVariable -Name 'DEPLOY_URL' -Value 'https://example.com' -IsOutput
 ```
 
-### [`Set-RandomKeyVaultSecret`](GitHubTools.psm1)
+### [`Set-RandomKeyVaultSecret`](AzGhOps.psm1)
 
 Generates and sets a random secret in an Azure Key Vault.
 
@@ -165,5 +165,5 @@ Invoke-Build -File ./build.ps1 -Task Test
 ## Installation
 
 ```powershell
-Install-Module GitHubTools
+Install-Module AzGhOps
 ```

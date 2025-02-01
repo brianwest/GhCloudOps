@@ -21,7 +21,7 @@ $builtManifestPath = Join-Path -Path $releaseFolder -ChildPath $manifestFile
 
 task set_environment_variables {
     $env:MODULE_VERSION = '0.0.0'
-    $env:PROJECT_URI = 'https://github.com/brianwest/GitHubTools'
+    $env:PROJECT_URI = 'https://github.com/brianwest/AzGhOps'
     $env:RELEASE_NOTES = 'Only for testing local build'
 }
 

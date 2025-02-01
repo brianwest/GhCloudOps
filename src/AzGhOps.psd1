@@ -89,10 +89,10 @@
         PSData = @{
 
             # Tags applied to this module. These help with module discovery in online galleries.
-            Tags = 'GitHub', 'Actions', 'Azure', 'Bicep'
+            Tags = 'GitHub', 'Actions', 'Azure', 'Bicep', 'Terraform', 'Json'
 
             # A URL to the license for this module.
-            LicenseUri = 'https://github.com/brianwest/GitHubTools?tab=MIT-1-ov-file#readme'
+            LicenseUri = 'https://github.com/brianwest/AzGhOps?tab=MIT-1-ov-file#readme'
 
             # A URL to the main website for this project.
             ProjectUri = ''

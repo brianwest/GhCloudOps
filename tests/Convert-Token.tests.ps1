@@ -1,7 +1,7 @@
 Describe 'Convert-Token' {
 	BeforeAll {
 		$repoRoot = Split-Path -Path $PSScriptRoot -Parent
-		$modulePath = Join-Path -Path $repoRoot -ChildPath 'src' -AdditionalChildPath 'GitHubTools.psm1'
+		$modulePath = Join-Path -Path $repoRoot -ChildPath 'src' -AdditionalChildPath 'AzGhOps.psm1'
 		Import-Module -Name $modulePath -Force
 
 		$helperPath = Join-Path -Path $repoRoot -ChildPath 'tests' -AdditionalChildPath 'helpers'
@@ -30,10 +30,10 @@ Describe 'Convert-Token' {
 		}
 
 		$tempFile = Join-Path 'TestDrive:' -ChildPath 'tempfile.tmp'
-		Mock -CommandName 'New-TemporaryFile' -ModuleName 'GitHubTools' -MockWith { New-Item -ItemType File -Path $tempFile -Force }
-		Mock -CommandName 'Write-Error' -ModuleName 'GitHubTools'
-		Mock -CommandName 'Write-Warning' -ModuleName 'GitHubTools'
-		Mock -CommandName 'Write-Host' -ModuleName 'GitHubTools'
+		Mock -CommandName 'New-TemporaryFile' -ModuleName 'AzGhOps' -MockWith { New-Item -ItemType File -Path $tempFile -Force }
+		Mock -CommandName 'Write-Error' -ModuleName 'AzGhOps'
+		Mock -CommandName 'Write-Warning' -ModuleName 'AzGhOps'
+		Mock -CommandName 'Write-Host' -ModuleName 'AzGhOps'
 	}
 
 	Context 'When parameters are properly configured' {
@@ -61,11 +61,11 @@ Describe 'Convert-Token' {
 		}
 
 		It 'Should not write a warning' {
-			Should -Not -Invoke 'Write-Warning' -Scope 'Context' -ModuleName 'GitHubTools'
+			Should -Not -Invoke 'Write-Warning' -Scope 'Context' -ModuleName 'AzGhOps'
 		}
 
 		It 'Should notify the user that tokens were replaced' {
-			Should -Invoke 'Write-Host' -Times 1 -Exactly -Scope 'Context' -ModuleName 'GitHubTools' -ParameterFilter {
+			Should -Invoke 'Write-Host' -Times 1 -Exactly -Scope 'Context' -ModuleName 'AzGhOps' -ParameterFilter {
 				$Object -eq ("Converted tokens in '{0}' to '{1}'" -f $bicepFile, $bicepOutputFile)
 			}
 		}
@@ -88,11 +88,11 @@ Describe 'Convert-Token' {
 		}
 
 		It 'Should not write a warning' {
-			Should -Not -Invoke 'Write-Warning' -Scope 'Context' -ModuleName 'GitHubTools'
+			Should -Not -Invoke 'Write-Warning' -Scope 'Context' -ModuleName 'AzGhOps'
 		}
 
 		It 'Should notify the user that tokens were replaced' {
-			Should -Invoke 'Write-Host' -Times 1 -Exactly -Scope 'Context' -ModuleName 'GitHubTools' -ParameterFilter {
+			Should -Invoke 'Write-Host' -Times 1 -Exactly -Scope 'Context' -ModuleName 'AzGhOps' -ParameterFilter {
 				$Object -eq ("Converted tokens in '{0}' to '{1}'" -f $terraformFile, $terraformOutputFile)
 			}
 		}
@@ -115,11 +115,11 @@ Describe 'Convert-Token' {
 		}
 
 		It 'Should not write a warning' {
-			Should -Not -Invoke 'Write-Warning' -Scope 'Context' -ModuleName 'GitHubTools'
+			Should -Not -Invoke 'Write-Warning' -Scope 'Context' -ModuleName 'AzGhOps'
 		}
 
 		It 'Should notify the user that tokens were replaced' {
-			Should -Invoke 'Write-Host' -Times 1 -Exactly -Scope 'Context' -ModuleName 'GitHubTools' -ParameterFilter {
+			Should -Invoke 'Write-Host' -Times 1 -Exactly -Scope 'Context' -ModuleName 'AzGhOps' -ParameterFilter {
 				$Object -eq ("Converted tokens in '{0}' to '{1}'" -f $jsonFile, $jsonOutputFile)
 			}
 		}
@@ -127,7 +127,7 @@ Describe 'Convert-Token' {
 
 	Context 'When output file already exists' {
 		BeforeAll {
-			Mock -CommandName 'Clear-Content' -ModuleName 'GitHubTools'
+			Mock -CommandName 'Clear-Content' -ModuleName 'AzGhOps'
 
 			New-Item -ItemType File -Path $bicepOutputFile -Force
 
@@ -135,7 +135,7 @@ Describe 'Convert-Token' {
 		}
 
 		It 'Should clear the contents of the output file' {
-			Should -Invoke 'Clear-Content' -Times 1 -Exactly -Scope 'Context' -ModuleName 'GitHubTools' -ParameterFilter {
+			Should -Invoke 'Clear-Content' -Times 1 -Exactly -Scope 'Context' -ModuleName 'AzGhOps' -ParameterFilter {
 				$Path -eq $bicepOutputFile
 			}
 		}
@@ -168,7 +168,7 @@ Describe 'Convert-Token' {
 		}
 
 		It 'Should write an error' {
-			Should -Invoke 'Write-Error' -Times 1 -Exactly -Scope 'Context' -ModuleName 'GitHubTools' -ParameterFilter {
+			Should -Invoke 'Write-Error' -Times 1 -Exactly -Scope 'Context' -ModuleName 'AzGhOps' -ParameterFilter {
 				$Message -eq 'Unmatched tokens found' -and
 				$ErrorAction -eq 'Continue'
 			}
@@ -185,7 +185,7 @@ Describe 'Convert-Token' {
 		}
 
 		It 'Should write a warning' {
-			Should -Invoke 'Write-Warning' -Times 1 -Exactly -Scope 'Context' -ModuleName 'GitHubTools' -ParameterFilter {
+			Should -Invoke 'Write-Warning' -Times 1 -Exactly -Scope 'Context' -ModuleName 'AzGhOps' -ParameterFilter {
 				$Message -eq ('Unused tokens: {0}' -f $extraToken)
 			}
 		}
