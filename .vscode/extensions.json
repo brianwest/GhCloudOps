@@ -1,6 +1,11 @@
 {
     "recommendations": [
         "ms-vscode.powershell",
-        "ms-azuretools.vscode-bicep"
+        "ms-azuretools.vscode-bicep",
+        "pspester.pester-test",
+        "github.vscode-github-actions",
+        "eamodio.gitlens",
+        "davidanson.vscode-markdownlint",
+        "streetsidesoftware.code-spell-checker"
     ]
 }

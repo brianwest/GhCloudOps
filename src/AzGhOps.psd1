@@ -21,7 +21,7 @@
     Copyright         = '(c) brianwest. All rights reserved.'
 
     # Description of the functionality provided by this module
-    Description       = 'A PowerShell module providing utilities for GitHub Actions and Azure deployments.'
+    Description       = 'A PowerShell module providing utilities for GitHub Actions and Azure infrastructure deployments.'
 
     # Minimum version of the PowerShell engine required by this module
     PowerShellVersion = '7.0'

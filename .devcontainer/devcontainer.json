@@ -1,0 +1,20 @@
+{
+    "image": "mcr.microsoft.com/azure-powershell:ubuntu-22.04",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-vscode.powershell",
+                "ms-azuretools.vscode-bicep",
+                "pspester.pester-test",
+                "github.vscode-github-actions",
+                "eamodio.gitlens",
+                "davidanson.vscode-markdownlint",
+                "streetsidesoftware.code-spell-checker"
+            ]
+        }
+    },
+    "features": {
+        "ghcr.io/devcontainers/features/git:1": {}
+    },
+    "postCreateCommand": "pwsh -File '/workspaces/AzGhOps/setup.ps1'"
+}
