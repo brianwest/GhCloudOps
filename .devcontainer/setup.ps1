@@ -26,16 +26,6 @@ $eolParams.ArgumentList = 'config', '--global', 'core.eol', 'crlf'
 Start-Process @eolParams
 Write-Host -Object 'Configured git to use CRLF line endings'
 
-$gitUserNameParams = $commonParams.Clone()
-$gitUserNameParams.FilePath = 'git'
-$gitUserNameParams.ArgumentList = 'config', '--global', 'user.name', (Read-Host -Prompt 'Enter your first and last name for git.')
-Start-Process @gitUserNameParams
-
-$gitUserEmailParams = $commonParams.Clone()
-$gitUserEmailParams.FilePath = 'git'
-$gitUserEmailParams.ArgumentList = 'config', '--global', 'user.email', (Read-Host -Prompt 'Enter your email address for git.')
-Start-Process @gitUserEmailParams
-
 Set-PSRepository -Name 'PSGallery' -InstallationPolicy 'Trusted'
 Write-Host -Object 'Trusted PSGallery'
 
