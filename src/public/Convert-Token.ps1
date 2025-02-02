@@ -1,13 +1,13 @@
 <#
 	.SYNOPSIS
-		Converts tokenized bicep parameter files to expanded files using a token map.
+		Converts tokenized bicep parameter, json or HCL files to expanded files using a token map.
 
 	.DESCRIPTION
-		Converts tokenized bicep parameter files to expanded files using a token map.  The token map is a hashtable
-		where the key is the token and the value is the replacement value.  The token is in the format '{{ token }}'.
-		The function reads the input file line by line and replaces the tokens with the corresponding values.  The
-		expanded content is written to the output file.  The function also checks for unmatched tokens and unused
-		tokens.
+		Converts tokenized bicep parameter, json or HCL files to expanded files using a token map.  The token map
+		is a hashtable where the key is the token and the value is the replacement value.  The token is in the
+		format '{{ token }}'. The function reads the input file line by line and replaces the tokens with the
+		corresponding values.  The expanded content is written to the output file.  The function also checks for
+		unmatched tokens and unused tokens.
 
 	.PARAMETER InputFile
 		The path to the input file.
