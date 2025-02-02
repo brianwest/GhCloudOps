@@ -1,6 +1,6 @@
 # PowerShell GitHub Tools
 
-A PowerShell module providing utilities for GitHub Actions and Azure deployments.
+A PowerShell module providing utilities for GitHub Actions and Azure infrastructure deployments.
 
 ## Functions
 
