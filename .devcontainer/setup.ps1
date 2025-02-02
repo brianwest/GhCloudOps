@@ -18,4 +18,7 @@ Start-Process @eolParams
 Write-Host -Object 'Configured git to use CRLF line endings'
 
 Set-PSRepository -Name 'PSGallery' -InstallationPolicy 'Trusted'
+Write-Host -Object 'Trusted PSGallery'
+
 Install-Module -Name 'InvokeBuild' -Force
+Write-Host -Object 'Installed InvokeBuild'
