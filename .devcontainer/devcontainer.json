@@ -5,7 +5,6 @@
             "extensions": [
                 "ms-vscode.powershell",
                 "ms-azuretools.vscode-bicep",
-                "pspester.pester-test",
                 "github.vscode-github-actions",
                 "eamodio.gitlens",
                 "davidanson.vscode-markdownlint",
