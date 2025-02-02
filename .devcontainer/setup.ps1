@@ -3,6 +3,15 @@ $commonParams = @{
     NoNewWindow = $true
 }
 
+$modules = @(
+    'InvokeBuild'
+    'Terminal-Icons'
+    'posh-git'
+)
+
+$customProfilePath = Join-Path -Path $PSScriptRoot -ChildPath 'profile.ps1'
+$vsCodeProfile = ($PROFILE).Replace('Microsoft.PowerShell', 'Microsoft.VSCode')
+
 $crlfParams = $commonParams.Clone()
 $crlfParams.FilePath = 'git'
 $crlfParams.ArgumentList = 'config', '--global', 'core.autocrlf', 'true'
@@ -17,8 +26,22 @@ $eolParams.ArgumentList = 'config', '--global', 'core.eol', 'crlf'
 Start-Process @eolParams
 Write-Host -Object 'Configured git to use CRLF line endings'
 
+$gitUserNameParams = $commonParams.Clone()
+$gitUserNameParams.FilePath = 'git'
+$gitUserNameParams.ArgumentList = 'config', '--global', 'user.name', (Read-Host -Prompt 'Enter your first and last name for git.')
+Start-Process @gitUserNameParams
+
+$gitUserEmailParams = $commonParams.Clone()
+$gitUserEmailParams.FilePath = 'git'
+$gitUserEmailParams.ArgumentList = 'config', '--global', 'user.email', (Read-Host -Prompt 'Enter your email address for git.')
+Start-Process @gitUserEmailParams
+
 Set-PSRepository -Name 'PSGallery' -InstallationPolicy 'Trusted'
 Write-Host -Object 'Trusted PSGallery'
 
-Install-Module -Name 'InvokeBuild' -Force
-Write-Host -Object 'Installed InvokeBuild'
+Install-Module -Name $modules -Force
+Write-Host -Object ('Installed {0}' -f ($modules -join ', '))
+
+$null = New-Item -ItemType File -Path $vsCodeProfile -Force
+Set-Content -Path $vsCodeProfile -Value (Get-Content -Path $customProfilePath)
+Write-Host -Object ("Created profile '{0}' from '{1}'" -f $vsCodeProfile, $customProfilePath)
