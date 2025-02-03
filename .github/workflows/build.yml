@@ -75,7 +75,7 @@ jobs:
         path: ${{ github.workspace }}/output
 
     - name: Publish Module
-      if: ${{ success() }}
+      if: inputs.moduleVersion != null && inputs.moduleVersion != '' && startsWith(inputs.moduleVersion, '0.') == false
       shell: pwsh
       run: |
         Write-Host -Object ("Publishing '{0}' version '{1}' to PSGallery" -f '${{ env.REPO_NAME }}', '${{ inputs.moduleVersion }}')
