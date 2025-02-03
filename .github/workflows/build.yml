@@ -78,7 +78,7 @@ jobs:
       if: ${{ success() }}
       shell: pwsh
       run: |
-        Write-Host -Object ("Publishing '{0}' version '{1}' to PSGallery" -f ${{ env.REPO_NAME }}, ${{ inputs.moduleVersion }})
+        Write-Host -Object ("Publishing '{0}' version '{1}' to PSGallery" -f '${{ env.REPO_NAME }}', '${{ inputs.moduleVersion }}')
 
         # $publishModuleParams = @{
         #   Path        = ${{ github.workspace }}/output
