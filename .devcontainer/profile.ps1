@@ -3,10 +3,12 @@ function Invoke-Step
     param
     (
         [Parameter(Mandatory)]
-        [string] $Description,
+        [string]
+        $Description,
 
         [Parameter(Mandatory)]
-        [scriptblock] $Script
+        [scriptblock]
+        $Script
     )
 
     Write-Host -NoNewline 'Loading ' $Description.PadRight(28)
@@ -42,11 +44,14 @@ Invoke-Step -Description 'Register-ArgumentCompleter' -Script {
     Register-ArgumentCompleter -CommandName Set-AzContext -ParameterName Subscription -ScriptBlock {
         param
         (
-            [string] $CommandName,
+            [string]
+            $CommandName,
 
-            [string] $ParameterName,
+            [string]
+            $ParameterName,
 
-            [string] $StringMatch
+            [string]
+            $StringMatch
         )
 
         (Get-AzSubscription).Where({ $_.Name -like "$StringMatch*" }).Name
