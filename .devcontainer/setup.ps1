@@ -21,10 +21,35 @@ Write-Host -Object 'Updated apt-get repositories'
 
 $curlParams = $commonParams.Clone()
 $curlParams.FilePath = 'apt-get'
-$curlParams.ArgumentList = 'install', '-y', 'curl'
+$curlParams.ArgumentList = 'install', '-y', 'wget'
 
 Start-Process @curlParams
-Write-Host -Object 'Installed curl'
+Write-Host -Object 'Installed wget'
+
+$pwshParams = $commonParams.Clone()
+$pwshParams.FilePath = 'wget'
+$pwshParams.ArgumentList = 'https://github.com/PowerShell/PowerShell/releases/download/v7.5.0/powershell_7.5.0-1.deb_amd64.deb'
+
+Start-Process @pwshParams
+
+$pwshDpkgParams = $commonParams.Clone()
+$pwshDpkgParams.FilePath = 'dpkg'
+$pwshDpkgParams.ArgumentList = '-i', 'powershell_7.5.0-1.deb_amd64.deb'
+
+Start-Process @pwshDpkgParams
+
+$missingDependenciesParmams = $commonParams.Clone()
+$missingDependenciesParmams.FilePath = 'apt-get'
+$missingDependenciesParmams.ArgumentList = 'install', '-f'
+
+Start-Process @missingDependenciesParmams
+
+$removeDebParams = $commonParams.Clone()
+$removeDebParams.FilePath = 'rm'
+$removeDebParams.ArgumentList = 'powershell_7.5.0-1.deb_amd64.deb'
+
+Start-Process @removeDebParams
+Write-Host -Object 'Installed PowerShell 7.5.0'
 
 $crlfParams = $commonParams.Clone()
 $crlfParams.FilePath = 'git'
