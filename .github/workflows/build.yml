@@ -74,17 +74,35 @@ jobs:
         name: ${{ env.REPO_NAME }}-${{ env.MODULE_VERSION }}
         path: ${{ github.workspace }}/output
 
+    - name: Publish Release
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: ${{ github.ref }}
+        body: ${{ env.RELEASE_NOTES }}
+        draft: false
+        prerelease: false
+
     - name: Publish Module
       if: inputs.moduleVersion != null && inputs.moduleVersion != '' && startsWith(inputs.moduleVersion, '0.') == false
       shell: pwsh
       run: |
-        Write-Host -Object ("Publishing '{0}' version '{1}' to PSGallery" -f '${{ env.REPO_NAME }}', '${{ inputs.moduleVersion }}')
+        $modulePath = Join-Path -Path ${{ github.workspace }} -ChildPath 'output' -AdditionalChildPath '${{ env.REPO_NAME }}'
+        $moduleVertionPath = Join-Path -Path $modulePath -ChildPath '${{ inputs.moduleVersion }}'
 
-        # $publishModuleParams = @{
-        #   Path        = ${{ github.workspace }}/output
-        #   NuGetApiKey = ${{ secrets.NUGET_API_KEY }}
-        #   Repository  = 'PSGallery'
-        #   Force       = $true
-        # }
+        if (Test-Path -Path $moduleVertionPath -PathType Container)
+        {
+          Write-Host -Object ("Publishing '{0}' to PSGallery" -f $moduleVersionPath)
 
-        # Publish-Module @publishModuleParams
+          # $publishModuleParams = @{
+          #   Path        = $moduleVersionPath
+          #   NuGetApiKey = ${{ secrets.NUGET_API_KEY }}
+          #   Repository  = 'PSGallery'
+          #   Force       = $true
+          # }
+
+          # Publish-Module @publishModuleParams
+        }
