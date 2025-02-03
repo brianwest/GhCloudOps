@@ -73,3 +73,18 @@ jobs:
       with:
         name: ${{ env.REPO_NAME }}-${{ env.MODULE_VERSION }}
         path: ${{ github.workspace }}/output
+
+    - name: Publish Module
+      if: ${{ success() }}
+      shell: pwsh
+      run: |
+        Write-Host -Object ("Publishing '{0}' version '{1}' to PSGallery" -f ${{ env.REPO_NAME }}, ${{ inputs.moduleVersion }})
+
+        # $publishModuleParams = @{
+        #   Path        = ${{ github.workspace }}/output
+        #   NuGetApiKey = ${{ secrets.NUGET_API_KEY }}
+        #   Repository  = 'PSGallery'
+        #   Force       = $true
+        # }
+
+        # Publish-Module @publishModuleParams
