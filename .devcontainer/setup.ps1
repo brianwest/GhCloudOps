@@ -12,6 +12,20 @@ $modules = @(
 $customProfilePath = Join-Path -Path $PSScriptRoot -ChildPath 'profile.ps1'
 $vsCodeProfile = ($PROFILE).Replace('Microsoft.PowerShell', 'Microsoft.VSCode')
 
+$aptUpdateParams = $commonParams.Clone()
+$aptUpdateParams.FilePath = 'apt-get'
+$aptUpdateParams.ArgumentList = 'update'
+
+Start-Process @aptUpdateParams
+Write-Host -Object 'Updated apt-get repositories'
+
+$curlParams = $commonParams.Clone()
+$curlParams.FilePath = 'apt-get'
+$curlParams.ArgumentList = 'install', '-y', 'curl'
+
+Start-Process @curlParams
+Write-Host -Object 'Installed curl'
+
 $crlfParams = $commonParams.Clone()
 $crlfParams.FilePath = 'git'
 $crlfParams.ArgumentList = 'config', '--global', 'core.autocrlf', 'true'
