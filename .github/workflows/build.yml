@@ -16,7 +16,7 @@ on:
 
 env:
   PROJECT_URI: https://github.com/${{ github.repository}}
-  MODULE_VERSION: 1.0.0
+  MODULE_VERSION: v1.0.0
   RELEASE_NOTES: No release notes provided
 
 jobs:
@@ -79,7 +79,7 @@ jobs:
       shell: pwsh
       run: |
         $modulePath = Join-Path -Path ${{ github.workspace }} -ChildPath 'output' -AdditionalChildPath '${{ env.REPO_NAME }}'
-        $moduleVertionPath = Join-Path -Path $modulePath -ChildPath '${{ inputs.moduleVersion }}'
+        $moduleVertionPath = Join-Path -Path $modulePath -ChildPath '${{ env.MODULE_VERSION }}'
 
         if (Test-Path -Path $moduleVertionPath -PathType Container)
         {
