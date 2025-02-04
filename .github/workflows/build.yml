@@ -81,7 +81,7 @@ jobs:
         $modulePath = Join-Path -Path ${{ github.workspace }} -ChildPath 'output' -AdditionalChildPath '${{ env.REPO_NAME }}'
         $moduleVersionPath = Join-Path -Path $modulePath -ChildPath '${{ env.MODULE_VERSION }}'.TrimStart('v')
 
-        if (Test-Path -Path $moduleVertionPath)
+        if (Test-Path -Path $moduleVersionPath)
         {
           Write-Host -Object ("Publishing '{0}' to PSGallery" -f $moduleVersionPath)
 
