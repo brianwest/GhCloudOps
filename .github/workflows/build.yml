@@ -13,17 +13,6 @@ on:
       - .github/workflows/build.yml
 
   workflow_dispatch:
-    inputs:
-      releaseNotes:
-        description: Release notes for the build
-        type: string
-        required: false
-        default: No release notes provided
-      moduleVersion:
-        description: The version of the module to build
-        type: string
-        required: false
-        default: 0.0.0
 
 env:
   PROJECT_URI: https://github.com/${{ github.repository}}
@@ -47,14 +36,11 @@ jobs:
 
         Set-GhVariable -Name REPO_NAME -Value '${{ github.repository }}'.Split('/')[1]
 
-        if ('${{ github.event.inputs.moduleVersion }}')
+        if ('${{ github.ref }}' -match 'refs/tags/v(?<moduleVersion>\d+\.\d+\.\d+)')
         {
-          Set-GhVariable -Name MODULE_VERSION -Value '${{ github.event.inputs.moduleVersion }}'
-        }
-
-        if ('${{ github.event.inputs.releaseNotes }}')
-        {
-          Set-GhVariable -Name RELEASE_NOTES -Value '${{ github.event.inputs.releaseNotes }}'
+          $moduleVersion = '${{ github.ref }}'.Split('/')[-1]
+          Set-GhVariable -Name MODULE_VERSION -Value $moduleVersion
+          Set-GhVariable -Name RELEASE_NOTES -Value ('${{ github.workspace }}/Releases/{0}.md' -f $moduleVersion)
         }
 
     - name: Build Module
@@ -84,12 +70,12 @@ jobs:
       with:
         tag_name: ${{ github.ref }}
         release_name: ${{ github.ref }}
-        body: ${{ env.RELEASE_NOTES }}
+        body_path: ${{ env.RELEASE_NOTES }}
         draft: false
         prerelease: false
 
     - name: Publish Module
-      if: inputs.moduleVersion != null && inputs.moduleVersion != '' && startsWith(inputs.moduleVersion, '0.') == false
+      if: ${{ github.ref }} == 'refs/tags/${{ env.MODULE_VERSION }}'
       shell: pwsh
       run: |
         $modulePath = Join-Path -Path ${{ github.workspace }} -ChildPath 'output' -AdditionalChildPath '${{ env.REPO_NAME }}'

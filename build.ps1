@@ -20,7 +20,7 @@ $builtModulePath = Join-Path -Path $releaseFolder -ChildPath $moduleFile
 $builtManifestPath = Join-Path -Path $releaseFolder -ChildPath $manifestFile
 
 task set_environment_variables {
-    $env:MODULE_VERSION = '0.0.0'
+    $env:MODULE_VERSION = '1.0.0'
     $env:PROJECT_URI = 'https://github.com/brianwest/AzGhOps'
     $env:RELEASE_NOTES = 'Only for testing local build'
 }
@@ -155,7 +155,7 @@ task update_manifest clean_output, build_module, {
     $manifest = Import-PowerShellDataFile -Path $manifestPath
     $manifest.FunctionsToExport = $script:functionsToExport
     $manifest.PrivateData.PSData.ProjectUri = $env:PROJECT_URI
-    $manifest.PrivateData.PSData.ReleaseNotes = $env:RELEASE_NOTES
+    $manifest.PrivateData.PSData.ReleaseNotes = Get-Content -Path (Join-Path -Path $PSScriptRoot -ChildPath 'Releases' -AdditionalChildPath ('v{0}.md' -f $env:MODULE_VERSION)) -Raw
     $manifestParams = @{
         Path                       = $builtManifestPath
         RootModule                 = Split-Path -Path $builtModulePath -Leaf
