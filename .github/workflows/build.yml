@@ -87,7 +87,7 @@ jobs:
 
           $publishModuleParams = @{
             Path        = $moduleVersionPath
-            NuGetApiKey = ${{ secrets.NUGET_API_KEY }}
+            NuGetApiKey = '${{ secrets.NUGET_API_KEY }}'
             Repository  = 'PSGallery'
             Force       = $true
           }
