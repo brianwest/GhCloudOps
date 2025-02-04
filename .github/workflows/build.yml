@@ -79,9 +79,9 @@ jobs:
       shell: pwsh
       run: |
         $modulePath = Join-Path -Path ${{ github.workspace }} -ChildPath 'output' -AdditionalChildPath '${{ env.REPO_NAME }}'
-        $moduleVersionPath = Join-Path -Path $modulePath -ChildPath '${{ env.MODULE_VERSION }}'
+        $moduleVersionPath = Join-Path -Path $modulePath -ChildPath '${{ env.MODULE_VERSION }}'.TrimStart('v')
 
-        if (Test-Path -Path $moduleVertionPath -PathType Container)
+        if (Test-Path -Path $moduleVertionPath)
         {
           Write-Host -Object ("Publishing '{0}' to PSGallery" -f $moduleVersionPath)
 
