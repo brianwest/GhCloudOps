@@ -159,7 +159,7 @@ task update_manifest clean_output, build_module, {
     $manifestParams = @{
         Path                       = $builtManifestPath
         RootModule                 = Split-Path -Path $builtModulePath -Leaf
-        ModuleVersion              = $env:MODULE_VERSION
+        ModuleVersion              = $env:MODULE_VERSION.Replace('v', '')
         Guid                       = $manifest.Guid
         Author                     = $manifest.Author
         Copyright                  = $manifest.Copyright
