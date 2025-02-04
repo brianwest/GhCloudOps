@@ -85,12 +85,12 @@ jobs:
         {
           Write-Host -Object ("Publishing '{0}' to PSGallery" -f $moduleVersionPath)
 
-          # $publishModuleParams = @{
-          #   Path        = $moduleVersionPath
-          #   NuGetApiKey = ${{ secrets.NUGET_API_KEY }}
-          #   Repository  = 'PSGallery'
-          #   Force       = $true
-          # }
+          $publishModuleParams = @{
+            Path        = $moduleVersionPath
+            NuGetApiKey = ${{ secrets.NUGET_API_KEY }}
+            Repository  = 'PSGallery'
+            Force       = $true
+          }
 
-          # Publish-Module @publishModuleParams
+          Publish-Module @publishModuleParams
         }
