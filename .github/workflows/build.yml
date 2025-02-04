@@ -79,7 +79,7 @@ jobs:
       shell: pwsh
       run: |
         $modulePath = Join-Path -Path ${{ github.workspace }} -ChildPath 'output' -AdditionalChildPath '${{ env.REPO_NAME }}'
-        $moduleVertionPath = Join-Path -Path $modulePath -ChildPath '${{ env.MODULE_VERSION }}'
+        $moduleVersionPath = Join-Path -Path $modulePath -ChildPath '${{ env.MODULE_VERSION }}'
 
         if (Test-Path -Path $moduleVertionPath -PathType Container)
         {

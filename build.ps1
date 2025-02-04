@@ -1,5 +1,6 @@
 #requires -Version 7.0
 
+$publishModuleVersion = $env:MODULE_VERSION.TrimStart('v')
 $sourcePath = Join-Path -Path $PSScriptRoot -ChildPath 'src'
 $moduleName = (Get-ChildItem -Path $sourcePath -Filter '*.psm1').BaseName
 $moduleFile = '{0}.psm1' -f $moduleName
@@ -15,7 +16,7 @@ $testPath = Join-Path -Path $PSScriptRoot -ChildPath 'tests'
 $coveragePercentTarget = 95
 $resultPath = Join-Path -Path $testPath -ChildPath 'testResults.xml'
 $coveragePath = Join-Path -Path $testPath -ChildPath 'coverage.xml'
-$releaseFolder = Join-Path -Path $outputFolder -ChildPath $moduleName -AdditionalChildPath $env:MODULE_VERSION
+$releaseFolder = Join-Path -Path $outputFolder -ChildPath $moduleName -AdditionalChildPath $publishModuleVersion
 $builtModulePath = Join-Path -Path $releaseFolder -ChildPath $moduleFile
 $builtManifestPath = Join-Path -Path $releaseFolder -ChildPath $manifestFile
 
@@ -159,7 +160,7 @@ task update_manifest clean_output, build_module, {
     $manifestParams = @{
         Path                       = $builtManifestPath
         RootModule                 = Split-Path -Path $builtModulePath -Leaf
-        ModuleVersion              = $env:MODULE_VERSION.Replace('v', '')
+        ModuleVersion              = $publishModuleVersion
         Guid                       = $manifest.Guid
         Author                     = $manifest.Author
         Copyright                  = $manifest.Copyright
