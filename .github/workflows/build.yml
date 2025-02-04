@@ -75,7 +75,7 @@ jobs:
         prerelease: false
 
     - name: Publish Module
-      if: ${{ github.ref }} == 'refs/tags/${{ env.MODULE_VERSION }}'
+      if: startsWith(github.ref, 'refs/tags/')
       shell: pwsh
       run: |
         $modulePath = Join-Path -Path ${{ github.workspace }} -ChildPath 'output' -AdditionalChildPath '${{ env.REPO_NAME }}'
