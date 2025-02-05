@@ -4,10 +4,13 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    outputs:
+      REPO_NAME: ${{ steps.set.outputs.REPO_NAME }}
     steps:
       - uses: actions/checkout@v4
 
       - name: test default output
+        id: set
         shell: pwsh
         run: |
           Import-Module ./src/GhCloudOps.psm1
@@ -16,7 +19,7 @@ jobs:
 
       - name: test masked output
         shell: pwsh
-        run: Write-Host "MY_RUNTIME_SECRET=$env:REPO_NAME"
+        run: Write-Host "MY_RUNTIME_SECRET=${{ steps.set.outputs.REPO_NAME }}"
   output:
     runs-on: ubuntu-latest
     needs: test
