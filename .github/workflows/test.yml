@@ -12,12 +12,15 @@ jobs:
         run: |
           Import-Module ./src/GhCloudOps.psm1
 
-          Set-GhVariable -Name REPO_NAME -Value '${{ github.repository }}'.Split('/')[-1] -IsSecret
-
-          # $generatedSecret = [guid]::NewGuid().ToString()
-          # Write-Host "::add-mask::$generatedSecret"
-          # Add-Content -Path $env:GITHUB_ENV -Value "MY_RUNTIME_SECRET=$generatedSecret"
+          Set-GhVariable -Name REPO_NAME -Value '${{ github.repository }}'.Split('/')[-1] -IsSecret -IsOutput
 
       - name: test masked output
         shell: pwsh
         run: Write-Host "MY_RUNTIME_SECRET=$env:REPO_NAME"
+  output:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: test output
+        shell: pwsh
+        run: Write-Host "MY_RUNTIME_SECRET=${{ needs.test.outputs.REPO_NAME }}"
