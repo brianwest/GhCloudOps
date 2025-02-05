@@ -5,11 +5,12 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+
       - name: test default output
         shell: pwsh
-        working-directory: ${{ github.workspace }}/src
         run: |
-          Import-Module ./GhCloudOps.psm1
+          Import-Module ./src/GhCloudOps.psm1
 
           Set-GhVariable -Name REPO_NAME -Value '${{ github.repository }}'.Split('/')[-1] -IsSecret
 
