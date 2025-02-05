@@ -155,7 +155,7 @@ task update_manifest clean_output, build_module, {
     $manifest = Import-PowerShellDataFile -Path $manifestPath
     $manifest.FunctionsToExport = $script:functionsToExport
     $manifest.PrivateData.PSData.ProjectUri = $env:PROJECT_URI
-    $manifest.PrivateData.PSData.ReleaseNotes = Get-Content -Path (Join-Path -Path $PSScriptRoot -ChildPath 'Releases' -AdditionalChildPath ('{0}.md' -f $env:MODULE_VERSION)) -Raw
+    $manifest.PrivateData.PSData.ReleaseNotes = Get-Content -Path (Join-Path -Path $PSScriptRoot -ChildPath 'Releases' -AdditionalChildPath ('v{0}.md' -f $env:MODULE_VERSION)) -Raw
     $manifestParams = @{
         Path                       = $builtManifestPath
         RootModule                 = Split-Path -Path $builtModulePath -Leaf
@@ -165,14 +165,22 @@ task update_manifest clean_output, build_module, {
         Copyright                  = $manifest.Copyright
         Description                = $manifest.Description
         PowerShellVersion          = $manifest.PowerShellVersion
-        RequiredModules            = $manifest.RequiredModules
         FunctionsToExport          = $manifest.FunctionsToExport
         AliasesToExport            = $manifest.AliasesToExport
         Tags                       = $manifest.PrivateData.PSData.Tags
         LicenseUri                 = $manifest.PrivateData.PSData.LicenseUri
         ProjectUri                 = $manifest.PrivateData.PSData.ProjectUri
         ReleaseNotes               = $manifest.PrivateData.PSData.ReleaseNotes
-        ExternalModuleDependencies = $manifest.PrivateData.PSData.ExternalModuleDependencies
+    }
+
+    if ($manifest.RequiredModules.Count -gt 0)
+    {
+        $manifestParams.Add('RequiredModules', $manifest.RequiredModules)
+    }
+
+    if ($manifest.PrivateData.PSData.ExternalModuleDependencies.Count -gt 0)
+    {
+        $manifestParams.Add('ExternalModuleDependencies', $manifest.PrivateData.PSData.ExternalModuleDependencies)
     }
 
     New-ModuleManifest @manifestParams
