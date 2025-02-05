@@ -16,7 +16,7 @@ on:
 
 env:
   PROJECT_URI: https://github.com/${{ github.repository}}
-  MODULE_VERSION: v1.0.0
+  MODULE_VERSION: 1.0.0
   RELEASE_NOTES: No release notes provided
 
 jobs:
@@ -38,9 +38,9 @@ jobs:
 
         if ('${{ github.ref }}' -match 'refs/tags/v(?<moduleVersion>\d+\.\d+\.\d+)')
         {
-          $moduleVersion = '${{ github.ref }}'.Split('/')[-1]
+          $moduleVersion = '${{ github.ref }}'.Split('/')[-1].TrimStart('v')
           Set-GhVariable -Name MODULE_VERSION -Value $moduleVersion
-          Set-GhVariable -Name RELEASE_NOTES -Value ('${{ github.workspace }}/Releases/{0}.md' -f $moduleVersion)
+          Set-GhVariable -Name RELEASE_NOTES -Value ('${{ github.workspace }}/Releases/v{0}.md' -f $moduleVersion)
         }
 
     - name: Build Module
@@ -79,7 +79,7 @@ jobs:
       shell: pwsh
       run: |
         $modulePath = Join-Path -Path ${{ github.workspace }} -ChildPath 'output' -AdditionalChildPath '${{ env.REPO_NAME }}'
-        $moduleVersionPath = Join-Path -Path $modulePath -ChildPath '${{ env.MODULE_VERSION }}'.TrimStart('v')
+        $moduleVersionPath = Join-Path -Path $modulePath -ChildPath '${{ env.MODULE_VERSION }}'
 
         if (Test-Path -Path $moduleVersionPath)
         {
