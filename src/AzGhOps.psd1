@@ -42,10 +42,7 @@
     # ProcessorArchitecture = ''
 
     # Modules that must be imported into the global environment prior to importing this module
-    RequiredModules   = @(
-        @{ ModuleName = 'Az.Accounts'; ModuleVersion = '4.0.2' }
-        @{ ModuleName = 'Az.KeyVault'; ModuleVersion = '6.3.1' }
-    )
+    RequiredModules   = @()
 
     # Assemblies that must be loaded prior to importing this module
     # RequiredAssemblies = @()
@@ -110,7 +107,7 @@
             # RequireLicenseAcceptance = $false
 
             # External dependent modules of this module
-            ExternalModuleDependencies = 'Az.Accounts', 'Az.KeyVault'
+            ExternalModuleDependencies = @()
 
         } # End of PSData hashtable
 

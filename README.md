@@ -159,7 +159,6 @@ Invoke-Build -File ./build.ps1 -Task Test
 ## Requirements
 
 - PowerShell 7
-- Az PowerShell module (for Key Vault operations)
 - GitHub Actions environment (for `Set-GhVariable`)
 
 ## Installation
