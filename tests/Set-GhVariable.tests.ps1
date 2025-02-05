@@ -1,7 +1,7 @@
 Describe 'Set-GhVariable' {
     BeforeAll {
         $repoRoot = Split-Path -Path $PSScriptRoot -Parent
-		$modulePath = Join-Path -Path $repoRoot -ChildPath 'src' -AdditionalChildPath 'GhCloudOps.psm1'
+        $modulePath = Join-Path -Path $repoRoot -ChildPath 'src' -AdditionalChildPath 'GhCloudOps.psm1'
         Import-Module -Name $modulePath -Force
 
         $script:originalEnv = $env:GITHUB_ENV
@@ -13,6 +13,8 @@ Describe 'Set-GhVariable' {
         $outputTemp = Join-Path -Path 'TestDrive:' -ChildPath 'outputTemp'
         $outputTempFile = New-Item -ItemType File -Path $outputTemp -Force
         $env:GITHUB_OUTPUT = $outputTempFile.FullName
+
+        Mock -CommandName 'Write-Host' -ModuleName 'GhCloudOps'
     }
 
     Context 'When paramters are configured correctly' {
@@ -56,6 +58,20 @@ Describe 'Set-GhVariable' {
         It 'Should create multiple output variables' {
             $content[0] | Should -BeExactly ('OUT_VAR1={0}' -f $value1)
             $content[1] | Should -BeExactly ('OUT_VAR2={0}' -f $value2)
+        }
+    }
+
+    Context 'When setting secret variables' {
+        BeforeAll {
+            $script:value = 'secret1'
+
+            Set-GhVariable -Name 'SECRET' -Value $value -IsSecret
+        }
+
+        It 'Should mask the secret value' {
+            Should -Invoke 'Write-Host' -Exactly -Times 1 -Scope 'Context' -ModuleName 'GhCloudOps' -ParameterFilter {
+                $Object -eq ('::add-mask::{0}' -f $value)
+            }
         }
     }
 

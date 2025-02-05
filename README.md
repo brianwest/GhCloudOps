@@ -140,6 +140,18 @@ Output variables can be set as follows:
 Set-GhVariable -Name 'DEPLOY_URL' -Value 'https://example.com' -IsOutput
 ```
 
+Secret variables can be set as follows:
+
+```powershell
+Set-GhVariable -Name 'DEPLOY_SECRET' -Value 'supersecret' -IsSecret
+```
+
+```powershell
+Set-GhVariable -Name 'DEPLOY_SECRET' -Value 'supersecret' -IsSecret -IsOutput
+```
+
+**Note:** Secret variables are not available to subsequent jobs in the workflow.
+
 ### [`New-RandomSecret`](GhCloudOps.psm1)
 
 Generates a random secure string.

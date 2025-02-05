@@ -25,9 +25,17 @@
 		Sets the environment variable 'MY_VAR' to 'my_value' in the GITHUB_ENV file.
 
 	.EXAMPLE
+		Set-GhVariable -Name 'MY_SECRET_VAR' -Value 'my_secret_value' -IsSecret
+
+		Sets the secret environment variable. The value is masked in the log output.
+
+	.EXAMPLE
 		Set-GhVariable -Name 'MY_OUTPUT_VAR' -Value 'output_value' -IsOutput
 
 		Sets the output variable 'MY_OUTPUT_VAR' to 'output_value' in the GITHUB_OUTPUT file.
+
+	.NOTES
+		For security reasons, secret variables cannot be accessed from outside of the job that defines them.
 #>
 function Set-GhVariable
 {
