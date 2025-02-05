@@ -9,7 +9,7 @@ jobs:
         shell: pwsh
         run: |
           $generatedSecret = [guid]::NewGuid().ToString()
-          Write-Output "::secrets.mask($generatedSecret)"
+          Write-Output "::add-mask::$generatedSecret"
           Add-Content -Path $env:GITHUB_ENV -Value "MY_RUNTIME_SECRET=$generatedSecret"
 
       - name: test masked output
