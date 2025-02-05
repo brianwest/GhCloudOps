@@ -8,7 +8,7 @@ jobs:
       - name: test default output
         shell: pwsh
         run: |
-          Get-ChildItem
+          pwd
 
           Import-Module ./src/GhCloudOps.psm1
 
