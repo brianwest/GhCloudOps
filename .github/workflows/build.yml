@@ -74,7 +74,7 @@ jobs:
         draft: false
         prerelease: false
 
-    - name: Publish Module
+    - name: Publish Module to PSGallery
       if: startsWith(github.ref, 'refs/tags/')
       shell: pwsh
       run: |
