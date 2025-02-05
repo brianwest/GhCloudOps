@@ -1,6 +1,6 @@
 # PowerShell GitHub Tools
 
-A PowerShell module providing utilities for GitHub Actions and Azure infrastructure deployments.
+A PowerShell module providing utilities for GitHub Actions and cloud infrastructure deployments.
 
 ## Functions
 
@@ -140,12 +140,12 @@ Output variables can be set as follows:
 Set-GhVariable -Name 'DEPLOY_URL' -Value 'https://example.com' -IsOutput
 ```
 
-### [`Set-RandomKeyVaultSecret`](AzGhOps.psm1)
+### [`New-RandomSecret`](AzGhOps.psm1)
 
-Generates and sets a random secret in an Azure Key Vault.
+Generates and sets a random secure string.
 
 ```powershell
-Set-RandomKeyVaultSecret -KeyVaultName 'my-vault' -SecretName 'app-secret' -Length 32
+New-RandomSecret -Length 32
 ```
 
 ## Testing
