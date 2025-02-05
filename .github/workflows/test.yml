@@ -6,4 +6,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: test default output
-        run: echo "MY_VARIABLE=Hello, World!" >> $GITHUB_ENV
+        shell: pwsh
+        run: |
+          $generatedSecret = [guid]::NewGuid().ToString()
+          Write-Output "::secrets.mask($generatedSecret)"
+          Add-Content -Path $env:GITHUB_ENV -Value "MY_RUNTIME_SECRET=$generatedSecret"
+
+      - name: test masked output
+        shell: pwsh
+        run: Write-Host "MY_RUNTIME_SECRET=$env:MY_RUNTIME_SECRET"
