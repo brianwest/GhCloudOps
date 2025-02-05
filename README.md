@@ -142,7 +142,7 @@ Set-GhVariable -Name 'DEPLOY_URL' -Value 'https://example.com' -IsOutput
 
 ### [`New-RandomSecret`](GhCloudOps.psm1)
 
-Generates and sets a random secure string.
+Generates a random secure string.
 
 ```powershell
 New-RandomSecret -Length 32
