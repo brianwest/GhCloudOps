@@ -7,10 +7,9 @@ jobs:
     steps:
       - name: test default output
         shell: pwsh
+        working-directory: ${{ github.workspace }}/src
         run: |
-          pwd
-
-          Import-Module ./src/GhCloudOps.psm1
+          Import-Module ./GhCloudOps.psm1
 
           Set-GhVariable -Name REPO_NAME -Value '${{ github.repository }}'.Split('/')[-1] -IsSecret
 
