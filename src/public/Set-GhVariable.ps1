@@ -16,6 +16,9 @@
 	.PARAMETER IsOutput
 		Indicates whether the variable should be set in the GITHUB_OUTPUT file instead of the GITHUB_ENV file.
 
+	.PARAMETER IsSecret
+		Indicates whether the variable should be treated as a secret.
+
 	.EXAMPLE
 		Set-GhVariable -Name 'MY_VAR' -Value 'my_value'
 
@@ -42,8 +45,17 @@ function Set-GhVariable
 
 		[Parameter()]
 		[switch]
-		$IsOutput
+		$IsOutput,
+
+		[Parameter()]
+		[switch]
+		$IsSecret
 	)
+
+	if ($IsSecret)
+	{
+		Write-Host -Object ('::add-mask::{0}' -f $Value)
+	}
 
 	$setVariableParams = @{
 		InputObject = '{0}={1}' -f $Name, $Value
