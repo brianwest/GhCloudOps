@@ -1,5 +1,7 @@
+name: Test Set-GhVariable
+
 on:
-  push:
+  workflow_dispatch:
 
 jobs:
   test:
