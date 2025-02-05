@@ -8,7 +8,7 @@ jobs:
       - name: test default output
         shell: pwsh
         run: |
-          Test-Path ./src/GhCloudOps.psm1
+          Test-Path ./src
 
           Import-Module ./src/GhCloudOps.psm1
 
