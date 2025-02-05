@@ -1,0 +1,9 @@
+on:
+  push:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: test default output
+        run: echo "MY_VARIABLE=Hello, World!" >> $GITHUB_ENV
