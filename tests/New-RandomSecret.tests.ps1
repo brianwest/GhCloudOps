@@ -1,7 +1,7 @@
 Describe 'New-RandomSecret' {
     BeforeAll {
         $repoRoot = Split-Path -Path $PSScriptRoot -Parent
-        $modulePath = Join-Path -Path $repoRoot -ChildPath 'src' -AdditionalChildPath 'AzGhOps.psm1'
+        $modulePath = Join-Path -Path $repoRoot -ChildPath 'src' -AdditionalChildPath 'GhCloudOps.psm1'
         Import-Module -Name $modulePath -Force
     }
 

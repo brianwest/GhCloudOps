@@ -4,7 +4,7 @@ A PowerShell module providing utilities for GitHub Actions and cloud infrastruct
 
 ## Functions
 
-### [`Convert-Token`](AzGhOps.psm1)
+### [`Convert-Token`](GhCloudOps.psm1)
 
 Converts tokenized .bicepparam, .json and .tfvars files by replacing tokens with values from a provided map. Useful for managing a single configuration file across different environments.
 
@@ -124,7 +124,7 @@ enabled = true
 identity = null
 ```
 
-### [`Set-GhVariable`](AzGhOps.psm1)
+### [`Set-GhVariable`](GhCloudOps.psm1)
 
 Sets GitHub Actions variables during workflow execution.
 
@@ -140,7 +140,7 @@ Output variables can be set as follows:
 Set-GhVariable -Name 'DEPLOY_URL' -Value 'https://example.com' -IsOutput
 ```
 
-### [`New-RandomSecret`](AzGhOps.psm1)
+### [`New-RandomSecret`](GhCloudOps.psm1)
 
 Generates and sets a random secure string.
 
@@ -164,5 +164,5 @@ Invoke-Build -File ./build.ps1 -Task Test
 ## Installation
 
 ```powershell
-Install-Module AzGhOps
+Install-Module GhCloudOps
 ```

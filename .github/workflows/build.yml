@@ -32,7 +32,7 @@ jobs:
     - name: Set Environment Variables
       shell: pwsh
       run: |
-        Import-Module ./src/AzGhOps.psm1
+        Import-Module ./src/GhCloudOps.psm1
 
         Set-GhVariable -Name REPO_NAME -Value '${{ github.repository }}'.Split('/')[1]
 

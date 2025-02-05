@@ -21,7 +21,7 @@ $builtManifestPath = Join-Path -Path $releaseFolder -ChildPath $manifestFile
 
 task set_environment_variables {
     $env:MODULE_VERSION = '1.0.0'
-    $env:PROJECT_URI = 'https://github.com/brianwest/AzGhOps'
+    $env:PROJECT_URI = 'https://github.com/brianwest/GhCloudOps'
     $env:RELEASE_NOTES = 'Only for testing local build'
 }
 
@@ -157,20 +157,20 @@ task update_manifest clean_output, build_module, {
     $manifest.PrivateData.PSData.ProjectUri = $env:PROJECT_URI
     $manifest.PrivateData.PSData.ReleaseNotes = Get-Content -Path (Join-Path -Path $PSScriptRoot -ChildPath 'Releases' -AdditionalChildPath ('v{0}.md' -f $env:MODULE_VERSION)) -Raw
     $manifestParams = @{
-        Path                       = $builtManifestPath
-        RootModule                 = Split-Path -Path $builtModulePath -Leaf
-        ModuleVersion              = $env:MODULE_VERSION
-        Guid                       = $manifest.Guid
-        Author                     = $manifest.Author
-        Copyright                  = $manifest.Copyright
-        Description                = $manifest.Description
-        PowerShellVersion          = $manifest.PowerShellVersion
-        FunctionsToExport          = $manifest.FunctionsToExport
-        AliasesToExport            = $manifest.AliasesToExport
-        Tags                       = $manifest.PrivateData.PSData.Tags
-        LicenseUri                 = $manifest.PrivateData.PSData.LicenseUri
-        ProjectUri                 = $manifest.PrivateData.PSData.ProjectUri
-        ReleaseNotes               = $manifest.PrivateData.PSData.ReleaseNotes
+        Path              = $builtManifestPath
+        RootModule        = Split-Path -Path $builtModulePath -Leaf
+        ModuleVersion     = $env:MODULE_VERSION
+        Guid              = $manifest.Guid
+        Author            = $manifest.Author
+        Copyright         = $manifest.Copyright
+        Description       = $manifest.Description
+        PowerShellVersion = $manifest.PowerShellVersion
+        FunctionsToExport = $manifest.FunctionsToExport
+        AliasesToExport   = $manifest.AliasesToExport
+        Tags              = $manifest.PrivateData.PSData.Tags
+        LicenseUri        = $manifest.PrivateData.PSData.LicenseUri
+        ProjectUri        = $manifest.PrivateData.PSData.ProjectUri
+        ReleaseNotes      = $manifest.PrivateData.PSData.ReleaseNotes
     }
 
     if ($manifest.RequiredModules.Count -gt 0)

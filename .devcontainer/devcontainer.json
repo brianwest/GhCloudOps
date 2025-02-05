@@ -17,5 +17,5 @@
     "features": {
         "ghcr.io/devcontainers/features/git:1": {}
     },
-    "postCreateCommand": "pwsh -File '/workspaces/AzGhOps/.devcontainer/setup.ps1'"
+    "postCreateCommand": "pwsh -File '/workspaces/GhCloudOps/.devcontainer/setup.ps1'"
 }
