@@ -21,7 +21,7 @@
     Copyright         = '(c) brianwest. All rights reserved.'
 
     # Description of the functionality provided by this module
-    Description       = 'A PowerShell module providing utilities for GitHub Actions and Azure infrastructure deployments.'
+    Description       = 'A PowerShell module providing utilities for GitHub Actions and cloud infrastructure deployments.'
 
     # Minimum version of the PowerShell engine required by this module
     PowerShellVersion = '7.0'
@@ -86,7 +86,7 @@
         PSData = @{
 
             # Tags applied to this module. These help with module discovery in online galleries.
-            Tags = 'GitHub', 'Actions', 'Azure', 'Bicep', 'Terraform', 'Json'
+            Tags = 'GitHub', 'Actions', 'Azure', 'AWS', 'GCP', 'Bicep', 'Terraform', 'Json'
 
             # A URL to the license for this module.
             LicenseUri = 'https://github.com/brianwest/GhCloudOps?tab=MIT-1-ov-file#readme'
