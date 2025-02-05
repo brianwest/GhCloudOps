@@ -15,7 +15,7 @@ jobs:
         run: |
           Import-Module ./src/GhCloudOps.psm1
 
-          Set-GhVariable -Name REPO_NAME -Value '${{ github.repository }}'.Split('/')[-1] -IsOutput
+          Set-GhVariable -Name REPO_NAME -Value '${{ github.repository }}'.Split('/')[-1] -IsOutput -IsSecret
 
       - name: test masked output
         shell: pwsh
