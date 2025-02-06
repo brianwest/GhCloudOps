@@ -6,11 +6,7 @@
                 "ms-vscode.powershell",
                 "ms-azuretools.vscode-bicep",
                 "github.vscode-github-actions",
-                "eamodio.gitlens",
-                "davidanson.vscode-markdownlint",
-                "streetsidesoftware.code-spell-checker",
-                "medo64.render-crlf",
-                "vscode-icons-team.vscode-icons"
+                "davidanson.vscode-markdownlint"
             ]
         }
     },
