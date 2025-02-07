@@ -5,7 +5,6 @@ $commonParams = @{
 
 $modules = @(
     'InvokeBuild'
-    'Terminal-Icons'
     'posh-git'
 )
 
