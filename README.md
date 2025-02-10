@@ -198,11 +198,15 @@ v0.1.0-beta
 
 The module includes Pester tests located in the [tests](tests) directory. To run the tests:
 
+Use the VS Code "Run Tests" task or:
+
 ```powershell
 Invoke-Build -File ./build.ps1 -Task test
 ```
 
 ## Building Locally
+
+Use the VS Code "Build Locally" task or:
 
 ```powershell
 Invoke-Build -File ./build.ps1 -Task local_build
