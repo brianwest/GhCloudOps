@@ -64,6 +64,18 @@ Describe 'Get-TagVersion' {
             $script:result = Get-TagVersion -Ref $ref
         }
 
+        It 'Should notify the user of the latest tag commit hash' {
+            Should -Invoke 'Write-Host' -Times 1 -Exactly -Scope 'Context' -ModuleName 'GhCloudOps' -ParameterFilter {
+                $Object -eq ("The latest tag commit hash is '{0}'." -f $commitHash)
+            }
+        }
+
+        It 'Should notify the user of the latest tag' {
+            Should -Invoke 'Write-Host' -Times 1 -Exactly -Scope 'Context' -ModuleName 'GhCloudOps' -ParameterFilter {
+                $Object -eq ("The latest tag is '{0}'." -f $latestTag)
+            }
+        }
+
         It 'Should notify the user that the version is being set by the latest tag' {
             Should -Invoke 'Write-Host' -Times 1 -Exactly -Scope 'Context' -ModuleName 'GhCloudOps' -ParameterFilter {
                 $Object -eq ("Version '{0}' is being set by the latest tag." -f $latestTag)

@@ -25,6 +25,7 @@
 #>
 function Get-TagVersion
 {
+    [OutputType([string])]
     param
     (
         [Parameter(Mandatory)]

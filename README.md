@@ -150,7 +150,7 @@ Set-GhVariable -Name 'DEPLOY_SECRET' -Value 'supersecret' -IsSecret
 Set-GhVariable -Name 'DEPLOY_SECRET' -Value 'supersecret' -IsSecret -IsOutput
 ```
 
-**Note:** Secret variables are not available to subsequent jobs in the workflow.
+**Note:** Secret variables are not available to subsequent jobs in a workflow.
 
 ### [`New-RandomSecret`](src/public/New-RandomSecret.ps1)
 
@@ -168,6 +168,9 @@ Tag from git ref:
 
 ```powershell
 Get-TagVersion -Ref 'refs/tags/v2.0.0'
+```
+
+```text
 v2.0.0
 ```
 
@@ -175,13 +178,19 @@ Tag from latest git tag:
 
 ```powershell
 Get-TagVersion -Ref 'refs/heads/main'
-v2.0.1 #Assuming v2.0.1 is that latest git tag
+```
+
+```text
+v2.0.1 *Assuming v2.0.1 is the latest git tag
 ```
 
 Tag from default value:
 
 ```powershell
-Get-TagVersion -Ref 'refs/heads/main' -DefaultVersion 'v0.1.0-beta'x
+Get-TagVersion -Ref 'refs/heads/main' -DefaultVersion 'v0.1.0-beta'
+```
+
+```text
 v0.1.0-beta
 ```
 
@@ -190,7 +199,13 @@ v0.1.0-beta
 The module includes Pester tests located in the [tests](tests) directory. To run the tests:
 
 ```powershell
-Invoke-Build -File ./build.ps1 -Task Test
+Invoke-Build -File ./build.ps1 -Task test
+```
+
+## Building Locally
+
+```powershell
+Invoke-Build -File ./build.ps1 -Task local_build
 ```
 
 ## Requirements
@@ -201,5 +216,5 @@ Invoke-Build -File ./build.ps1 -Task Test
 ## Installation
 
 ```powershell
-Install-Module GhCloudOps
+Install-Module -Name GhCloudOps
 ```
