@@ -28,22 +28,11 @@ function Get-TagVersion
         $DefaultVersion = 'v1.0.0-beta'
     )
 
-    $commonParams = @{
-        NoNewWindow = $true
-        Wait        = $true
-    }
-
-    $commitParams = $commonParams.Clone()
-    $commitParams.FilePath = 'git'
-    $commitParams.ArgumentList = @('rev-list', '--tags', '--max-count=1')
-    $latestTagCommitHash = Start-Process @commitParams
+    $latestTagCommitHash = & git rev-list --tags --max-count=1
     if ($null -ne $latestTagCommitHash)
     {
         Write-Host -Object ("The latest tag commit hash is '{0}'." -f $latestTagCommitHash)
-        $tagParams = $commonParams.Clone()
-        $tagParams.FilePath = 'git'
-        $tagParams.ArgumentList = @('describe', '--tags', $latestTagCommitHash)
-        $latestTagVersion = Start-Process @tagParams
+        $latestTagVersion = & git describe --tags $latestTagCommitHash
         Write-Host -Object ("The latest tag is '{0}'." -f $latestTagVersion)
     }
 
@@ -51,7 +40,7 @@ function Get-TagVersion
     {
         $tag = $Ref.Split('/')[-1]
         $version = $tag
-        Write-Host -Object ("Version '{0}' is being set by ref '{1}." -f $version, $Ref)
+        Write-Host -Object ("Version '{0}' is being set by ref '{1}'." -f $version, $Ref)
     }
     elseif ($Ref -like 'refs/tags/*')
     {

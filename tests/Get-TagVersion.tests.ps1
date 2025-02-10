@@ -7,15 +7,13 @@ Describe 'Get-TagVersion' {
         $commitHash = '1234567890'
         $latestTag = 'v1.0.0'
 
-        Mock -CommandName 'Start-Process' -ModuleName 'GhCloudOps' -MockWith { $commitHash } -ParameterFilter {
-            $FilePath -eq 'git' -and
-            $ArgumentList -eq @('rev-list', '--tags', '--max-count=1')
-        }
+        Mock -CommandName 'git' -ModuleName 'GhCloudOps' -MockWith {
+            $commitHash
+        } -ParameterFilter { $Args -join ' ' -eq 'rev-list --tags --max-count=1' }
 
-        Mock -CommandName 'Start-Process' -ModuleName 'GhCloudOps' -MockWith { $latestTag } -ParameterFilter {
-            $FilePath -eq 'git' -and
-            $ArgumentList -eq @('describe', '--tags', $commitHash)
-        }
+        Mock -CommandName 'git' -ModuleName 'GhCloudOps' -MockWith {
+            $latestTag
+        } -ParameterFilter { $Args -join ' ' -eq "describe --tags $commitHash" }
 
         Mock -CommandName 'Write-Host' -ModuleName 'GhCloudOps'
     }
@@ -39,8 +37,8 @@ Describe 'Get-TagVersion' {
         }
 
         It 'Should notify the user that the version is being set by the ref' {
-            Should -Invoke 'Write-Host' -Times 1 -Exactly -Scope 'Context' -ParameterFilter {
-                $Object -eq ("Version '{0}' is being set by ref '{1}." -f $latestTag, $ref)
+            Should -Invoke 'Write-Host' -Times 1 -Exactly -Scope 'Context' -ModuleName 'GhCloudOps' -ParameterFilter {
+                $Object -eq ("Version '{0}' is being set by ref '{1}'." -f $currentTag, $ref)
             }
         }
 
@@ -67,7 +65,7 @@ Describe 'Get-TagVersion' {
         }
 
         It 'Should notify the user that the version is being set by the latest tag' {
-            Should -Invoke 'Write-Host' -Times 1 -Exactly -Scope 'Context' -ParameterFilter {
+            Should -Invoke 'Write-Host' -Times 1 -Exactly -Scope 'Context' -ModuleName 'GhCloudOps' -ParameterFilter {
                 $Object -eq ("Version '{0}' is being set by the latest tag." -f $latestTag)
             }
         }
@@ -79,10 +77,7 @@ Describe 'Get-TagVersion' {
 
     Context 'When the Ref parameter is not a version tag and no tag is found' {
         BeforeAll {
-            Mock -CommandName 'Start-Process' -ModuleName 'GhCloudOps' -MockWith { $null } -ParameterFilter {
-                $FilePath -eq 'git' -and
-                $ArgumentList -eq @('rev-list', '--tags', '--max-count=1')
-            }
+            Mock -CommandName 'git' -ModuleName 'GhCloudOps' -ParameterFilter { $Args -join ' ' -eq 'rev-list --tags --max-count=1' }
 
             $ref = 'refs/heads/main'
             $defaultVersion = 'v1.0.0-beta'
@@ -91,7 +86,7 @@ Describe 'Get-TagVersion' {
         }
 
         It 'Should notify the user that the version is being set by the default value' {
-            Should -Invoke 'Write-Host' -Times 1 -Exactly -Scope 'Context' -ParameterFilter {
+            Should -Invoke 'Write-Host' -Times 1 -Exactly -Scope 'Context' -ModuleName 'GhCloudOps' -ParameterFilter {
                 $Object -eq ("Version '{0}' is being set by the default value." -f $defaultVersion)
             }
         }
