@@ -30,11 +30,6 @@ task clean_output {
     {
         Remove-Item -Path $outputFolder -Recurse -Force
     }
-
-    if (Test-Path -Path $requiredModulesOutputPath)
-    {
-        Remove-Item -Path $requiredModulesOutputPath -Recurse -Force
-    }
 }
 
 task install_modules clean_output, {

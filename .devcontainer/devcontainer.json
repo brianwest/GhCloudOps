@@ -6,6 +6,7 @@
                 "ms-vscode.powershell",
                 "ms-azuretools.vscode-bicep",
                 "github.vscode-github-actions",
+                "github.copilot",
                 "davidanson.vscode-markdownlint"
             ]
         }

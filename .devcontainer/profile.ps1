@@ -25,7 +25,6 @@ Set-Alias -Name ls -Value Get-ChildItem
 
 Invoke-Step -Description 'Import-Module' -Script {
     $modulesToImport = @(
-        'Terminal-Icons'
         'posh-git'
     )
 
