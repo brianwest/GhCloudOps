@@ -4,7 +4,7 @@ A PowerShell module providing utilities for GitHub Actions and cloud infrastruct
 
 ## Functions
 
-### [`Convert-Token`](GhCloudOps.psm1)
+### [`Convert-Token`](src/public/Convert-Token.ps1)
 
 Converts tokenized .bicepparam, .json and .tfvars files by replacing tokens with values from a provided map. Useful for managing a single configuration file across different environments.
 
@@ -124,7 +124,7 @@ enabled = true
 identity = null
 ```
 
-### [`Set-GhVariable`](GhCloudOps.psm1)
+### [`Set-GhVariable`](src/public/Set-GhVariable.ps1)
 
 Sets GitHub Actions variables during workflow execution.
 
@@ -152,12 +152,37 @@ Set-GhVariable -Name 'DEPLOY_SECRET' -Value 'supersecret' -IsSecret -IsOutput
 
 **Note:** Secret variables are not available to subsequent jobs in the workflow.
 
-### [`New-RandomSecret`](GhCloudOps.psm1)
+### [`New-RandomSecret`](src/public/New-RandomSecret.ps1)
 
 Generates a random secure string.
 
 ```powershell
 New-RandomSecret -Length 32
+```
+
+### [`Get-TagVersion`](src/public/Get-TagVersion.ps1)
+
+Returns a version for tagging infrastructure resources by looking at the git ref, latest tag or a default value provided
+
+Tag from git ref:
+
+```powershell
+Get-TagVersion -Ref 'refs/tags/v2.0.0'
+v2.0.0
+```
+
+Tag from latest git tag:
+
+```powershell
+Get-TagVersion -Ref 'refs/heads/main'
+v2.0.1 #Assuming v2.0.1 is that latest git tag
+```
+
+Tag from default value:
+
+```powershell
+Get-TagVersion -Ref 'refs/heads/main' -DefaultVersion 'v0.1.0-beta'x
+v0.1.0-beta
 ```
 
 ## Testing

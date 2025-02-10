@@ -9,11 +9,19 @@
         The tag reference to get the version from.
 
     .PARAMETER DefaultVersion
-        The default version to return if no tag is found.
+        The default version to return if no tag is found. Default is 'v1.0.0-beta'.
 
     .EXAMPLE
         Get-Version.ps1 -Ref refs/tags/v1.0.0
         Returns 'v1.0.0'.
+
+    .EXAMPLE
+        Get-Version.ps1 -Ref refs/heads/main
+        Returns 'v1.0.1', if it's the latest git tag.
+
+    .EXAMPLE
+        Get-Version.ps1 -Ref refs/heads/main -DefaultVersion 'v0.0.1'
+        Returns 'v0.0.1'.
 #>
 function Get-TagVersion
 {
