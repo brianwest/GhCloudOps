@@ -40,7 +40,7 @@ jobs:
         {
           $moduleVersion = '${{ github.ref }}'.Split('/')[-1].TrimStart('v')
           Set-GhVariable -Name MODULE_VERSION -Value $moduleVersion
-          Set-GhVariable -Name RELEASE_NOTES -Value ('${{ github.workspace }}/Releases/v{0}.md' -f $moduleVersion)
+          Set-GhVariable -Name RELEASE_NOTES -Value ('${{ github.workspace }}/releases/v{0}.md' -f $moduleVersion)
         }
 
     - name: Build Module
