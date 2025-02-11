@@ -21,7 +21,7 @@
 
     .EXAMPLE
         Get-Version.ps1 -Ref refs/heads/main -DefaultVersion 'v0.0.1'
-        Returns 'v0.0.1'.
+        Returns 'v0.0.1', if no tags are found.
 #>
 function Get-TagVersion
 {

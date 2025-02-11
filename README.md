@@ -191,7 +191,7 @@ Get-TagVersion -Ref 'refs/heads/main' -DefaultVersion 'v0.1.0-beta'
 ```
 
 ```text
-v0.1.0-beta
+v0.1.0-beta *Assuming no tag is found
 ```
 
 ## Testing
