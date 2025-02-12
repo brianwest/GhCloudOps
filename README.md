@@ -1,4 +1,4 @@
-# PowerShell GitHub Tools
+# GhCloudOps
 
 A PowerShell module providing utilities for GitHub Actions and cloud infrastructure deployments.
 
