@@ -67,7 +67,7 @@ function Convert-Token
 	}
 	else
 	{
-		throw ('Unsupported file type: {0}' -f $item.Extension)
+		throw 'Unsupported file type: {0}' -f $item.Extension
 	}
 
 	$content = Get-Content -Path $InputFile

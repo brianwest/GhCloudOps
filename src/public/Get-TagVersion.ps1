@@ -53,7 +53,7 @@ function Get-TagVersion
     }
     elseif ($Ref -like 'refs/tags/*')
     {
-        throw ("The tag '{0}' is not a version tag. Please, use a version tag in the format 'v*.*.*'." -f $Ref)
+        throw "The tag '{0}' is not a version tag. Please, use a version tag in the format 'v*.*.*'." -f $Ref
     }
     elseif ($null -ne $latestTagVersion)
     {

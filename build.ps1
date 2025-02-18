@@ -78,7 +78,7 @@ task test install_modules, {
         [xml]$testResults = Get-Content -Path $resultPath
         if ($testResults.'test-results'.failures -gt 0)
         {
-            throw ('{0} tests failed.' -f $testResults.'test-results'.failures)
+            throw '{0} tests failed.' -f $testResults.'test-results'.failures
         }
         else
         {
