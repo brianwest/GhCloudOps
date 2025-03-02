@@ -151,8 +151,8 @@ Convert-Token -InputFile 'params.psd1' -OutputFile 'expanded.psd1' -TokenMap $to
 @{
     name     = 'test'
     count    = 1
-    enabled  = true
-    identity = null
+    enabled  = $true
+    identity = $null
 }
 ```
 
