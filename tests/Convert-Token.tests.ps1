@@ -5,12 +5,14 @@ Describe 'Convert-Token' {
 		Import-Module -Name $modulePath -Force
 
 		$helperPath = Join-Path -Path $repoRoot -ChildPath 'tests' -AdditionalChildPath 'helpers'
-		$bicepFile = Join-Path -Path $helperPath -ChildPath 'test.bicepparam'
-		$bicepOutputFile = Join-Path -Path 'TestDrive:' -ChildPath 'expanded.bicepparam'
+		$script:bicepFile = Join-Path -Path $helperPath -ChildPath 'test.bicepparam'
+		$script:bicepOutputFile = Join-Path -Path 'TestDrive:' -ChildPath 'expanded.bicepparam'
 		$script:terraformFile = Join-Path -Path $helperPath -ChildPath 'test.tfvars'
 		$script:terraformOutputFile = Join-Path -Path 'TestDrive:' -ChildPath 'expanded.tfvars'
 		$script:jsonFile = Join-Path -Path $helperPath -ChildPath 'test.json'
 		$script:jsonOutputFile = Join-Path -Path 'TestDrive:' -ChildPath 'expanded.json'
+		$script:psd1File = Join-Path -Path $helperPath -ChildPath 'test.psd1'
+		$script:psd1OutputFile = Join-Path -Path 'TestDrive:' -ChildPath 'expanded.psd1'
 		$script:unsupportedFile = Join-Path -Path $helperPath -ChildPath 'test.txt'
 		$script:unsupportedOutputFile = Join-Path -Path 'TestDrive:' -ChildPath 'expanded.txt'
 
@@ -21,12 +23,6 @@ Describe 'Convert-Token' {
 			count    = 1
 			enabled  = $true
 			identity = $null
-		}
-
-		$script:bicepParams = @{
-			InputFile  = $bicepFile
-			OutputFile = $bicepOutputFile
-			TokenMap   = $tokenMap
 		}
 
 		$tempFile = Join-Path 'TestDrive:' -ChildPath 'tempfile.tmp'
@@ -52,6 +48,12 @@ Describe 'Convert-Token' {
 
 	Context 'When parameter file has a bicepparam file extension' {
 		BeforeAll {
+			$script:bicepParams = @{
+				InputFile  = $bicepFile
+				OutputFile = $bicepOutputFile
+				TokenMap   = $tokenMap
+			}
+
 			Convert-Token @bicepParams
 			$script:unmatchedTokens = Select-String -Path $bicepOutputFile -Pattern $pattern -AllMatches
 		}
@@ -121,6 +123,33 @@ Describe 'Convert-Token' {
 		It 'Should notify the user that tokens were replaced' {
 			Should -Invoke 'Write-Host' -Times 1 -Exactly -Scope 'Context' -ModuleName 'GhCloudOps' -ParameterFilter {
 				$Object -eq ("Converted tokens in '{0}' to '{1}'" -f $jsonFile, $jsonOutputFile)
+			}
+		}
+	}
+
+	Context 'When parameter file has a psd1 file extension' {
+		BeforeAll {
+			$psd1Params = @{
+				InputFile  = $psd1File
+				OutputFile = $psd1OutputFile
+				TokenMap   = $tokenMap
+			}
+
+			Convert-Token @psd1Params
+			$script:unmatchedTokens = Select-String -Path $psd1OutputFile -Pattern $pattern -AllMatches
+		}
+
+		It 'Should replace tokens with tokenized values' {
+			$unmatchedTokens | Should -BeNullOrEmpty
+		}
+
+		It 'Should not write a warning' {
+			Should -Not -Invoke 'Write-Warning' -Scope 'Context' -ModuleName 'GhCloudOps'
+		}
+
+		It 'Should notify the user that tokens were replaced' {
+			Should -Invoke 'Write-Host' -Times 1 -Exactly -Scope 'Context' -ModuleName 'GhCloudOps' -ParameterFilter {
+				$Object -eq ("Converted tokens in '{0}' to '{1}'" -f $psd1File, $psd1OutputFile)
 			}
 		}
 	}

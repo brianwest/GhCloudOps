@@ -33,7 +33,6 @@ param count = '{{ count }}'
 param enabled = '{{ enabled }}'
 
 param identity = '{{ identity }}'
-
 ```
 
 #### Expanded Bicep Parameter File
@@ -48,43 +47,6 @@ param count = 1
 param enabled = true
 
 param identity = null
-```
-
-#### Convert Json Parameter File
-
-```powershell
-$tokenMap = @{
-    name     = 'test'
-    count    = 1
-    enabled  = $true
-    identity = $null
-}
-
-Convert-Token -InputFile 'params.json' -OutputFile 'expanded.json' -TokenMap $tokenMap
-```
-
-#### Tokenized Json Parameter File
-
-```json
-{
-    "name": "{{ name }}",
-    "count": "{{ count }}",
-    "enabled": "{{ enabled }}",
-    "identity": "{{ identity }}"
-}
-
-```
-
-#### Expanded Json Parameter File
-
-```json
-{
-    "name": "test",
-    "count": 1,
-    "enabled": true,
-    "identity": null
-}
-
 ```
 
 #### Convert Terraform Tfvars File
@@ -122,6 +84,76 @@ count = 1
 enabled = true
 
 identity = null
+```
+
+#### Convert Json Parameter File
+
+```powershell
+$tokenMap = @{
+    name     = 'test'
+    count    = 1
+    enabled  = $true
+    identity = $null
+}
+
+Convert-Token -InputFile 'params.json' -OutputFile 'expanded.json' -TokenMap $tokenMap
+```
+
+#### Tokenized Json Parameter File
+
+```json
+{
+    "name": "{{ name }}",
+    "count": "{{ count }}",
+    "enabled": "{{ enabled }}",
+    "identity": "{{ identity }}"
+}
+```
+
+#### Expanded Json Parameter File
+
+```json
+{
+    "name": "test",
+    "count": 1,
+    "enabled": true,
+    "identity": null
+}
+```
+
+#### Convert Psd1 Parameter File
+
+```powershell
+$tokenMap = @{
+    name     = 'test'
+    count    = 1
+    enabled  = $true
+    identity = $null
+}
+
+Convert-Token -InputFile 'params.psd1' -OutputFile 'expanded.psd1' -TokenMap $tokenMap
+```
+
+#### Tokenized Psd1 Parameter File
+
+```powershell
+@{
+    name     = '{{ name }}'
+    count    = '{{ count }}'
+    enabled  = '{{ enabled }}'
+    identity = '{{ identity }}'
+}
+```
+
+#### Expanded Psd1 Parameter File
+
+```powershell
+@{
+    name     = 'test'
+    count    = 1
+    enabled  = true
+    identity = null
+}
 ```
 
 ### [`Set-GhVariable`](src/public/Set-GhVariable.ps1)
