@@ -121,7 +121,7 @@ Convert-Token -InputFile 'params.json' -OutputFile 'expanded.json' -TokenMap $to
 }
 ```
 
-#### Convert Psd1 Parameter File
+#### Convert Psd1 File
 
 ```powershell
 $tokenMap = @{
@@ -134,7 +134,7 @@ $tokenMap = @{
 Convert-Token -InputFile 'params.psd1' -OutputFile 'expanded.psd1' -TokenMap $tokenMap
 ```
 
-#### Tokenized Psd1 Parameter File
+#### Tokenized Psd1 File
 
 ```powershell
 @{
@@ -145,7 +145,7 @@ Convert-Token -InputFile 'params.psd1' -OutputFile 'expanded.psd1' -TokenMap $to
 }
 ```
 
-#### Expanded Psd1 Parameter File
+#### Expanded Psd1 File
 
 ```powershell
 @{
