@@ -21,17 +21,24 @@ function New-RandomSecret
 	param
 	(
 		[Parameter(Mandatory)]
+		[ValidateRange(1, 1024)]
 		[int]
 		$Length
 	)
 
 	$chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_-+=<>?[]{}|;:,.`~'
+	$secretChars = [char[]]::new($Length)
+
+	for ($index = 0; $index -lt $Length; $index++)
+	{
+		$secretChars[$index] = $chars[[System.Security.Cryptography.RandomNumberGenerator]::GetInt32($chars.Length)]
+	}
+
 	$secretValueParams = @{
-		String      = -join (1..$Length | ForEach-Object { $chars[(Get-Random -Minimum 0 -Maximum $chars.Length)] })
+		String      = -join $secretChars
 		AsPlainText = $true
 		Force       = $true
 	}
 
-	$secretValue = ConvertTo-SecureString @secretValueParams
-	return $secretValue
+	return ConvertTo-SecureString @secretValueParams
 }

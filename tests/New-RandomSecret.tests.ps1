@@ -12,13 +12,15 @@ Describe 'New-RandomSecret' {
     }
 
     Context 'When generating secrets' {
-        BeforeAll {
-            New-RandomSecret -Length 16
-        }
-
         It 'Should return a secure string of the specified length' {
             $secureString = New-RandomSecret -Length 16
             $secureString | Should -BeOfType [System.Security.SecureString]
+        }
+    }
+
+    Context 'When Length is invalid' {
+        It 'Should throw for a length lower than 1' {
+            { New-RandomSecret -Length 0 } | Should -Throw
         }
     }
 }
